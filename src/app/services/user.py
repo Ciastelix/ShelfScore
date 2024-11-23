@@ -22,3 +22,9 @@ class UserService:
 
     def delete(self, user_id: UUID) -> None:
         return self.user_repository.delete(user_id)
+
+    def change_password(self, user_passwords, user) -> User:
+        return self.user_repository.change_password(user_passwords, user)
+
+    def add_image(self, user_id: UUID, image_path: str) -> User:
+        return self.user_repository.add_image(user_id, image_path)

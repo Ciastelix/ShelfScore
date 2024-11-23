@@ -1,3 +1,4 @@
+from __future__ import annotations
 from sqlalchemy import Column, String, Boolean, Integer, ForeignKey
 from db import Base
 from uuid import uuid4
@@ -15,5 +16,6 @@ class Book(Base):
     description = Column(String, nullable=False)
     image = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
+
     author = relationship("Author", back_populates="books")
     reviews = relationship("Review", back_populates="book")

@@ -6,6 +6,12 @@ from sqlalchemy.orm import Session
 
 Base = declarative_base()
 
+# Import all models here
+from models.user import User
+from models.book import Book
+from models.review import Review
+from models.author import Author
+
 
 class Database:
 

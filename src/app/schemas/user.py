@@ -7,35 +7,29 @@ class UserInCreate(BaseModel):
     username: str
     email: str
     password: str
-    name: str
-    surname: str
-
-
-class UserInDB(BaseModel):
-    username: str
-    email: str
-
-
-class WorkerInResponseUser(BaseModel):
-    id: UUID
-    name: str
-    surname: str
-    username: str
-    email: str
-    is_active: bool
-
-
-class UserInResponse(BaseModel):
-    id: UUID
-    name: str
-    surname: str
-    username: str
-    email: str
-    is_active: bool
 
 
 class UserInUpdate(BaseModel):
     username: Optional[str]
     email: Optional[str]
     password: Optional[str]
+    description: Optional[str]
+    picture: Optional[str]
     is_active: Optional[bool]
+
+    class Config:
+        from_model = True
+
+
+class UserUpdatePassword(BaseModel):
+    password: str
+    new_password: str
+
+
+class UserInDB(BaseModel):
+    id: UUID
+    username: str
+    email: str
+    description: str
+    picture: str
+    is_active: bool

@@ -1,10 +1,9 @@
 from contextlib import AbstractContextManager
 from typing import Callable
 from sqlalchemy.orm import Session
-from schemas.user import UserInCreate, UserInUpdate
+from schemas.user import UserInCreate, UserInUpdate, UserUpdatePassword
 from models.user import User
-
-from utils.password import get_password_hash
+from utils.password import get_password_hash, verify_password
 from uuid import UUID
 
 
@@ -46,6 +45,17 @@ class UserRepository:
             session.refresh(user)
             return user
 
+    def add_image(self, user_id: UUID, image_path: str) -> User:
+        if type(user_id) == str:
+            user_id = UUID(user_id)
+        with self.session_factory() as session:
+            user = session.query(User).filter_by(id=user_id).first()
+            user.picture = image_path
+
+            session.commit()
+            session.refresh(user)
+            return user
+
     def delete(self, user_id: UUID) -> None:
         if type(user_id) == str:
             user_id = UUID(user_id)
@@ -59,3 +69,19 @@ class UserRepository:
             usr = session.query(User).filter_by(email=user.email).first()
             if usr.password == get_password_hash(user.password):
                 return usr
+
+    def change_password(
+        self, updated_password: UserUpdatePassword, current_user: any
+    ) -> User:
+        user_id = current_user.id
+        if type(user_id) == str:
+            user_id = UUID(user_id)
+        with self.session_factory() as session:
+            user = session.query(User).filter_by(id=user_id).first()
+            if verify_password(updated_password.password, user.password):
+                user.password = get_password_hash(updated_password.new_password)
+                session.commit()
+                session.refresh(user)
+                return user
+            else:
+                raise ValueError("Current password is incorrect")

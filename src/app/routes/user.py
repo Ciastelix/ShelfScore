@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status, Depends
-from schemas.user import UserInCreate, UserInResponse, UserInUpdate
+from schemas.user import UserInCreate, UserInDB, UserInUpdate, UserUpdatePassword
 from dependency_injector.wiring import Provide, inject
 from services.user import UserService
 from container import Container
@@ -8,17 +8,19 @@ from fastapi.security import OAuth2PasswordRequestForm
 from services.auth import AuthService
 from fastapi import HTTPException
 from repositories.auth import oauth2_scheme
+from fastapi import UploadFile, File
+from services.image import ImageService
 
 router = APIRouter()
 
 
-@router.get("/", response_model=list[UserInResponse], status_code=status.HTTP_200_OK)
+@router.get("/", response_model=list[UserInDB], status_code=status.HTTP_200_OK)
 @inject
 def read_users(user_service: UserService = Depends(Provide[Container.user_service])):
     return user_service.get_all()
 
 
-@router.post("/", response_model=UserInResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=UserInDB, status_code=status.HTTP_201_CREATED)
 @inject
 def create_user(
     user: UserInCreate,
@@ -27,7 +29,7 @@ def create_user(
     return user_service.add(user)
 
 
-@router.get("/{user_id}", response_model=UserInResponse, status_code=status.HTTP_200_OK)
+@router.get("/{user_id}", response_model=UserInDB, status_code=status.HTTP_200_OK)
 @inject
 def read_user(
     user_id: UUID, user_service: UserService = Depends(Provide[Container.user_service])
@@ -35,7 +37,7 @@ def read_user(
     return user_service.get_by_id(user_id)
 
 
-@router.put("/{user_id}", response_model=UserInResponse, status_code=status.HTTP_200_OK)
+@router.put("/{user_id}", response_model=UserInDB, status_code=status.HTTP_200_OK)
 @inject
 def update_user(
     user_id: UUID,
@@ -78,6 +80,37 @@ async def get_current_user(
             detail="Invalid authentication credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
+    return user
+
+
+@router.post("/change-password", status_code=status.HTTP_200_OK)
+@inject
+def change_password(
+    user: UserUpdatePassword,
+    user_service: UserService = Depends(Provide[Container.user_service]),
+    current_user=Depends(get_current_user),
+):
+    return user_service.change_password(user, current_user)
+
+
+@router.post("/upload-image", response_model=UserInDB, status_code=status.HTTP_200_OK)
+@inject
+async def upload_image(
+    current_user=Depends(get_current_user),
+    file: UploadFile = File(...),
+    user_service: UserService = Depends(Provide[Container.user_service]),
+    image_service: ImageService = Depends(Provide[Container.image_service]),
+):
+    # Check if the uploaded file is an image
+    if file.content_type not in ["image/jpeg", "image/png"]:
+        raise HTTPException(status_code=400, detail="Invalid image format")
+
+    # Save the image and get the path
+    image_path = await image_service.save_image(current_user.id, file)
+
+    # Update the user's picture in the database
+    user = user_service.add_image(current_user.id, image_path)
+
     return user
 
 

@@ -1,8 +1,11 @@
+from __future__ import annotations
 from sqlalchemy import Column, String, Boolean, Integer
 from db import Base
 from uuid import uuid4
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
+
+# from .book import Book
 
 
 class Author(Base):
