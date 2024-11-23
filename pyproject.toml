@@ -5,7 +5,7 @@ description = "Default template for PDM package"
 authors = [
     {name = "Ciastelix", email = "tenlegitmati@gmail.com"},
 ]
-dependencies = ["sqlalchemy>=2.0.36", "fastapi>=0.115.5", "dependency-injector>=4.43.0", "uvicorn>=0.32.0", "passlib>=1.7.4", "pyjwt>=2.10.0", "python-multipart>=0.0.17", "bcrypt>=4.2.1"]
+dependencies = ["sqlalchemy>=2.0.36", "fastapi>=0.115.5", "dependency-injector>=4.43.0", "uvicorn>=0.32.0", "passlib>=1.7.4", "pyjwt>=2.10.0", "python-multipart>=0.0.17", "bcrypt>=4.2.1", "alembic>=1.14.0"]
 requires-python = "==3.13.*"
 readme = "README.md"
 license = {text = "MIT"}
