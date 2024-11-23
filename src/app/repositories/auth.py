@@ -9,7 +9,7 @@ from fastapi import HTTPException
 from datetime import timedelta
 from models.user import User
 
-from utils.password import verify_password
+from utils.security import verify_password
 from sqlalchemy.orm import Session
 from contextlib import AbstractContextManager
 from typing import Callable

@@ -3,7 +3,7 @@ from typing import Callable
 from sqlalchemy.orm import Session
 from schemas.user import UserInCreate, UserInUpdate, UserUpdatePassword
 from models.user import User
-from utils.password import get_password_hash, verify_password
+from utils.security import get_password_hash, verify_password
 from uuid import UUID
 
 

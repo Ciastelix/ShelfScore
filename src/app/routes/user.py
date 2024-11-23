@@ -7,7 +7,7 @@ from uuid import UUID
 from fastapi.security import OAuth2PasswordRequestForm
 from services.auth import AuthService
 from fastapi import HTTPException
-from repositories.auth import oauth2_scheme
+from utils.current_user import get_current_user
 from fastapi import UploadFile, File
 from services.image import ImageService
 
@@ -66,21 +66,6 @@ def login_user(
     auth_service: AuthService = Depends(Provide[Container.auth_service]),
 ):
     return auth_service.login(form_data.username, form_data.password)
-
-
-@inject
-async def get_current_user(
-    token: str = Depends(oauth2_scheme),
-    auth_service: AuthService = Depends(Provide[Container.auth_service]),
-):
-    user = auth_service.get_current_user(token)
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    return user
 
 
 @router.post("/change-password", status_code=status.HTTP_200_OK)
