@@ -1,14 +1,17 @@
 from fastapi import FastAPI
 from container import Container
 import uvicorn
-from routes import user
+from routes import user, book, review, author
 
 container = Container()
 db = container.db()
 db.create_database()
 app = FastAPI()
 app.container = container
-app.include_router(user.router)
+app.include_router(user.router, prefix="/users")
+app.include_router(book.router, prefix="/books")
+app.include_router(review.router, prefix="/reviews")
+app.include_router(author.router, prefix="/authors")
 
 from fastapi.middleware.cors import CORSMiddleware
 
