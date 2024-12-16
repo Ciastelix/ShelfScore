@@ -1,0 +1,118 @@
+$primary-color: #740f35;
+$secondary-color: #74580f;
+$tertiary-color: #0f7458;
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: $primary-color;
+  color: #fff;
+  margin: 0; /* Ensure no margin */
+  width: 100%; /* Ensure it spans the full width */
+  position: relative; /* Make navbar the positioning context */
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: 'Fontdiner Swanky', serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .menu {
+    display: flex;
+    gap: 1rem;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 300;
+    font-style: normal;
+
+    a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.2rem;
+
+      &:hover {
+        color: $tertiary-color;
+      }
+    }
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+
+    span {
+      height: 3px;
+      width: 25px;
+      background-color: #fff;
+      margin: 4px 0;
+      transition: 0.4s;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .menu {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      background-color: $primary-color;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      padding: 1rem 0;
+
+      a {
+        padding: 1rem;
+        text-align: center;
+      }
+    }
+
+    .menu.active {
+      display: flex;
+    }
+
+    .hamburger {
+      display: flex;
+    }
+  }
+}
+
+.login-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1000; /* Ensure it appears in front of other content */
+  animation: fadeIn 0.5s ease-in-out;
+  &.fade-out {
+    animation: fadeOut 0.5s ease-in-out;
+  }
+}
+
+.login-wrapper {
+  background-color: #f9f9f9;
+  padding: 2rem; /* Make the login form wider */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

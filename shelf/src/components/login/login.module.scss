@@ -1,0 +1,133 @@
+$primary-color: #740f35;
+$secondary-color: #74580f;
+$tertiary-color: #0f7458;
+
+.login-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+
+    label {
+      position: absolute;
+      top: 50%;
+      left: 0.75rem;
+      transform: translateY(-50%);
+      background-color: #f9f9f9;
+      padding: 0 0.25rem;
+      transition: all 0.2s ease;
+      pointer-events: none;
+      font-size: 1rem;
+      color: #999;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      outline: none;
+
+      &:focus + label,
+      &:not(:placeholder-shown) + label {
+        top: -0.5rem;
+        left: 0.5rem;
+        font-size: 0.75rem;
+        color: $primary-color;
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+
+      input[type='checkbox'] {
+        display: none;
+      }
+
+      label {
+        position: relative;
+        padding-left: 2rem;
+        cursor: pointer;
+        user-select: none;
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 1rem;
+          height: 1rem;
+          border: 2px solid #ccc;
+          border-radius: 4px;
+          background-color: #fff;
+          transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          left: 0.25rem;
+          top: 50%;
+          transform: translateY(-50%) scale(0);
+          width: 0.5rem;
+          height: 0.5rem;
+          border-radius: 2px;
+          background-color: $primary-color;
+          transition: transform 0.2s;
+        }
+      }
+
+      input[type='checkbox']:checked + label::before {
+        border-color: $primary-color;
+      }
+
+      input[type='checkbox']:checked + label::after {
+        transform: translateY(-50%) scale(1);
+      }
+    }
+
+    button {
+      padding: 0.75rem 1.5rem;
+      background-color: $primary-color;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $secondary-color;
+      }
+    }
+  }
+
+  .forgot-password {
+    display: block;
+    margin-top: 1rem;
+    text-align: right;
+
+    a {
+      color: $primary-color;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
