@@ -3,12 +3,19 @@ $secondary-color: #74580f;
 $tertiary-color: #0f7458;
 
 .login-form {
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
   padding: 2rem;
   background-color: #f9f9f9;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+  }
 
   .form-group {
     position: relative;
@@ -25,6 +32,10 @@ $tertiary-color: #0f7458;
       pointer-events: none;
       font-size: 1rem;
       color: #999;
+
+      @media (max-width: 480px) {
+        font-size: 0.875rem;
+      }
     }
 
     input {
@@ -35,24 +46,40 @@ $tertiary-color: #0f7458;
       font-size: 1rem;
       outline: none;
 
+      @media (max-width: 480px) {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+      }
+
       &:focus + label,
       &:not(:placeholder-shown) + label {
         top: -0.5rem;
         left: 0.5rem;
         font-size: 0.75rem;
         color: $primary-color;
+
+        @media (max-width: 480px) {
+          top: -0.4rem;
+          left: 0.4rem;
+          font-size: 0.625rem;
+        }
       }
     }
   }
 
   .form-actions {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+
+    @media (max-width: 480px) {
+      align-items: stretch;
+    }
 
     .remember-me {
       display: flex;
       align-items: center;
+      margin-bottom: 1rem;
 
       input[type='checkbox'] {
         display: none;
@@ -94,10 +121,16 @@ $tertiary-color: #0f7458;
 
       input[type='checkbox']:checked + label::before {
         border-color: $primary-color;
+        background-color: $primary-color;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
       }
 
       input[type='checkbox']:checked + label::after {
         transform: translateY(-50%) scale(1);
+      }
+
+      label:hover::before {
+        border-color: $secondary-color;
       }
     }
 
@@ -110,6 +143,12 @@ $tertiary-color: #0f7458;
       font-size: 1rem;
       cursor: pointer;
 
+      @media (max-width: 480px) {
+        width: 100%;
+        padding: 0.5rem;
+        font-size: 0.875rem;
+      }
+
       &:hover {
         background-color: $secondary-color;
       }
@@ -120,6 +159,10 @@ $tertiary-color: #0f7458;
     display: block;
     margin-top: 1rem;
     text-align: right;
+
+    @media (max-width: 480px) {
+      text-align: center;
+    }
 
     a {
       color: $primary-color;

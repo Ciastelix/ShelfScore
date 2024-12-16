@@ -78,6 +78,25 @@ $tertiary-color: #0f7458;
       display: flex;
     }
   }
+
+  @media (max-width: 480px) {
+    padding: 0.5rem 1rem;
+
+    .logo {
+      font-size: 1.2rem;
+    }
+
+    .menu {
+      a {
+        font-size: 1rem;
+      }
+    }
+
+    .hamburger span {
+      height: 2px;
+      width: 20px;
+    }
+  }
 }
 
 .login-container {
@@ -85,10 +104,24 @@ $tertiary-color: #0f7458;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  margin-top: 30px;
+  min-width: 300px;
   z-index: 1000; /* Ensure it appears in front of other content */
   animation: fadeIn 0.5s ease-in-out;
   &.fade-out {
     animation: fadeOut 0.5s ease-in-out;
+  }
+
+  @media (max-width: 768px) {
+    justify-content: flex-end; /* Align to the right */
+    right: 0; /* Ensure it aligns to the right edge */
+  }
+
+  @media (max-width: 480px) {
+    min-width: 100%;
+    padding: 1rem;
+    justify-content: flex-end; /* Align to the right */
+    right: 0; /* Ensure it aligns to the right edge */
   }
 }
 
@@ -97,6 +130,10 @@ $tertiary-color: #0f7458;
   padding: 2rem; /* Make the login form wider */
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+  }
 }
 
 @keyframes fadeIn {

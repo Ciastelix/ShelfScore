@@ -6,6 +6,8 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const loginRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
@@ -94,7 +96,12 @@ export function Navbar() {
             className={styles['login-wrapper']}
             onClick={(e) => e.stopPropagation()}
           >
-            <Login />
+            <Login
+              email={email}
+              password={password}
+              setEmail={setEmail}
+              setPassword={setPassword}
+            />
           </div>
         </div>
       )}

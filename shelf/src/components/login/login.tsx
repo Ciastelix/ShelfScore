@@ -1,6 +1,22 @@
+import { ChangeEvent } from 'react';
 import styles from './login.module.scss';
 
-export function Login() {
+interface LoginProps {
+  email: string;
+  password: string;
+  setEmail: (email: string) => void;
+  setPassword: (password: string) => void;
+}
+
+export function Login({ email, password, setEmail, setPassword }: LoginProps) {
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
   return (
     <div className={styles['login-form']}>
       <form>
@@ -10,6 +26,8 @@ export function Login() {
             id="email"
             name="email"
             placeholder=" "
+            value={email}
+            onChange={handleEmailChange}
             required
           />
           <label htmlFor="email">Email</label>
@@ -20,6 +38,8 @@ export function Login() {
             id="password"
             name="password"
             placeholder=" "
+            value={password}
+            onChange={handlePasswordChange}
             required
           />
           <label htmlFor="password">Password</label>
