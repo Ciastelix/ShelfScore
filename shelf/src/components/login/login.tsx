@@ -1,5 +1,7 @@
 import { ChangeEvent } from 'react';
 import styles from './login.module.scss';
+import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 interface LoginProps {
   email: string;
@@ -15,6 +17,33 @@ export function Login({ email, password, setEmail, setPassword }: LoginProps) {
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
+  };
+
+  const cookies = new Cookies(null, { path: '/' });
+
+  const login = async (e: any) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        'http://localhost:8000/users/login',
+        {
+          username: email,
+          password: password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        }
+      );
+      if (res.status === 200) {
+        console.log(res);
+        cookies.set('token', res.data.access_token);
+        window.location.href = '/';
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -51,7 +80,9 @@ export function Login({ email, password, setEmail, setPassword }: LoginProps) {
             <label htmlFor="remember-me">Remember me</label>
           </div>
 
-          <button type="submit">Login</button>
+          <button type="submit" onClick={login}>
+            Login
+          </button>
         </div>
 
         <div className={styles['forgot-password']}>

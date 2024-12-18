@@ -1,17 +1,26 @@
 import { useState, useRef, useEffect } from 'react';
 import styles from './navbar.module.scss';
 import { Login } from '../login/login';
+import Cookies from 'universal-cookie';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState(''); // Manage email state here
+  const [password, setPassword] = useState(''); // Manage password state here
+  const [token, setToken] = useState<string | undefined>(undefined);
   const loginRef = useRef<HTMLDivElement>(null);
+
+  const cookies = new Cookies(null, { path: '/' });
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const logout = async () => {
+    cookies.remove('token');
+    setToken(undefined);
   };
 
   const toggleLogin = (e: React.MouseEvent) => {
@@ -58,7 +67,6 @@ export function Navbar() {
         loginContainer.style.top = `${rect.bottom + window.scrollY}px`;
         loginContainer.style.left = `${rect.left + window.scrollX}px`;
 
-        // Ensure the login form doesn't overflow the viewport
         const containerRect = loginContainer.getBoundingClientRect();
         if (containerRect.right > window.innerWidth) {
           loginContainer.style.left = `${
@@ -69,22 +77,37 @@ export function Navbar() {
     }
   }, [showLogin]);
 
+  useEffect(() => {
+    const token = cookies.get('token');
+    setToken(token);
+  }, [cookies]);
+
   return (
     <>
       <nav className={styles['navbar']}>
         <div className={styles['logo']}>ShelfScore</div>
         <div className={`${styles['menu']} ${isOpen ? styles['active'] : ''}`}>
-          <a href="#login" onClick={toggleLogin}>
-            Login
-          </a>
-          <a href="#register">Register</a>
+          {!token ? (
+            <>
+              <a href="#login" onClick={toggleLogin}>
+                Login
+              </a>
+              <a href="#register">Register</a>
+            </>
+          ) : (
+            <a href="#logout" onClick={logout}>
+              Logout
+            </a>
+          )}
         </div>
+
         <div className={styles['hamburger']} onClick={toggleMenu}>
           <span></span>
           <span></span>
           <span></span>
         </div>
       </nav>
+
       {showLogin && (
         <div
           className={`${styles['login-container']} ${

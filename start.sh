@@ -8,4 +8,4 @@ export JWT_SECRET="fJJZNs9LnU356LmyTQA8"
 export JWT_ALGORITHM="HS256"
 export IMAGE_URL="images/profiles"
 
-uvicorn main:app --reload
+uvicorn main:app --port 8000  --reload

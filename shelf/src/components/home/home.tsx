@@ -1,4 +1,6 @@
 import styles from './home.module.scss';
+import Cookies from 'universal-cookie';
+const cookies = new Cookies(null, { path: '/' });
 
 export function Home() {
   return (
