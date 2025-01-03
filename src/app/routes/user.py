@@ -92,7 +92,7 @@ async def upload_image(
         raise HTTPException(status_code=400, detail="Invalid image format")
 
     # Save the image and get the path
-    image_path = await image_service.save_image(current_user.id, file)
+    image_path = await image_service.save_image(current_user.id, file, 100, 100)
 
     # Update the user's picture in the database
     user = user_service.add_image(current_user.id, image_path)
@@ -106,5 +106,5 @@ async def upload_image(
     tags=["users"],
 )
 @inject
-async def read_users_me(current_user=Depends(get_current_user)) -> Dict[str, Any]:
+async def read_users_me(current_user=Depends(get_current_user)):
     return {"user": current_user, "isValid": True}

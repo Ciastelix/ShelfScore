@@ -13,6 +13,19 @@ $tertiary-color: #0f7458;
   width: 100%; /* Ensure it spans the full width */
   position: relative; /* Make navbar the positioning context */
 
+  .profile-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Space between image and text */
+  }
+
+  img {
+    width: 2rem; /* Adjust the size as needed */
+    height: 2rem; /* Adjust the size as needed */
+    border-radius: 50%; /* Make the image round */
+    object-fit: cover; /* Ensure the image covers the container */
+  }
+
   .logo {
     font-size: 1.5rem;
     font-weight: bold;
@@ -63,6 +76,7 @@ $tertiary-color: #0f7458;
       top: 60px;
       left: 0;
       padding: 1rem 0;
+      align-items: center; /* Center items horizontally */
 
       a {
         padding: 1rem;

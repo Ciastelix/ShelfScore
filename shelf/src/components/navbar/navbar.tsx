@@ -2,17 +2,20 @@ import { useState, useRef, useEffect } from 'react';
 import styles from './navbar.module.scss';
 import { Login } from '../login/login';
 import Cookies from 'universal-cookie';
+import axios from 'axios';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
-  const [email, setEmail] = useState(''); // Manage email state here
-  const [password, setPassword] = useState(''); // Manage password state here
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [token, setToken] = useState<string | undefined>(undefined);
   const loginRef = useRef<HTMLDivElement>(null);
-
+  const menuRef = useRef<HTMLDivElement>(null);
+  const [userId, setUserId] = useState('');
   const cookies = new Cookies(null, { path: '/' });
+  const [imagePath, setImagePath] = useState('/images/profiles/default.png');
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -21,6 +24,7 @@ export function Navbar() {
   const logout = async () => {
     cookies.remove('token');
     setToken(undefined);
+    setImagePath('/images/profiles/default.png');
   };
 
   const toggleLogin = (e: React.MouseEvent) => {
@@ -30,7 +34,7 @@ export function Navbar() {
       setTimeout(() => {
         setShowLogin(false);
         setFadeOut(false);
-      }, 500); // Match the duration of the fade-out animation
+      }, 500);
     } else {
       setShowLogin(true);
     }
@@ -42,12 +46,15 @@ export function Navbar() {
       setTimeout(() => {
         setShowLogin(false);
         setFadeOut(false);
-      }, 500); // Match the duration of the fade-out animation
+      }, 500);
+    }
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      setIsOpen(false);
     }
   };
 
   useEffect(() => {
-    if (showLogin) {
+    if (showLogin || isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     } else {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -56,7 +63,7 @@ export function Navbar() {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [showLogin]);
+  }, [showLogin, isOpen]);
 
   useEffect(() => {
     if (showLogin && loginRef.current) {
@@ -78,15 +85,38 @@ export function Navbar() {
   }, [showLogin]);
 
   useEffect(() => {
-    const token = cookies.get('token');
-    setToken(token);
+    const fetchUserData = async () => {
+      const token = cookies.get('token');
+      setToken(token);
+      try {
+        const res = await axios.get('http://localhost:8000/users/me/token', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUserId(res.data.user.id);
+        setImagePath(
+          res.data.user.picture
+            ? `/images/profiles/${res.data.user.picture}`
+            : '/images/profiles/default.png'
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchUserData();
   }, [cookies]);
 
   return (
     <>
       <nav className={styles['navbar']}>
         <div className={styles['logo']}>ShelfScore</div>
-        <div className={`${styles['menu']} ${isOpen ? styles['active'] : ''}`}>
+        <div
+          className={`${styles['menu']} ${isOpen ? styles['active'] : ''}`}
+          ref={menuRef}
+        >
           {!token ? (
             <>
               <a href="#login" onClick={toggleLogin}>
@@ -95,9 +125,14 @@ export function Navbar() {
               <a href="#register">Register</a>
             </>
           ) : (
-            <a href="#logout" onClick={logout}>
-              Logout
-            </a>
+            <>
+              <a href={`/profile/${userId}`} className={styles['profile-link']}>
+                <img src={imagePath} alt="Profile" /> Profile
+              </a>
+              <a href="#logout" onClick={logout}>
+                Logout
+              </a>
+            </>
           )}
         </div>
 

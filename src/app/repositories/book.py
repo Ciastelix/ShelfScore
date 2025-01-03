@@ -19,7 +19,9 @@ class BookRepository:
 
     async def add(self, book: BookInCreate, image: UploadFile) -> Book:
         with self.session_factory() as session:
-            image_path = await self.image_service.save_image(image)
+            image_path = await self.image_service.save_image(
+                book.title.replace(" ", "_"), image, 200, 300
+            )
             book_data = book.model_dump()
             book_data["image"] = image_path
             book = Book(**book_data)

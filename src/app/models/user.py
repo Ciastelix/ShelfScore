@@ -12,7 +12,7 @@ class User(Base):
     username = Column(String, nullable=False)
     email = Column(String, nullable=False)
     description = Column(String, nullable=True, default="")
-    picture = Column(String, nullable=True, default="default.jpg")
+    picture = Column(String, nullable=True, default="default.png")
     password = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
     user_reviews = relationship("Review", back_populates="user")
