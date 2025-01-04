@@ -38,7 +38,7 @@ class AuthRepository:
             return self.get_user(user_id)
         except jwt.ExpiredSignatureError:
             raise HTTPException(status_code=401, detail="Token has expired")
-        except jwt.JWTError:
+        except jwt.PyJWTError:
             raise HTTPException(status_code=401, detail="Invalid token")
 
     def get_user(self, id: str):

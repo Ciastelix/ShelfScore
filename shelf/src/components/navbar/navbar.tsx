@@ -122,7 +122,7 @@ export function Navbar() {
               <a href="#login" onClick={toggleLogin}>
                 Login
               </a>
-              <a href="#register">Register</a>
+              <a href="/register">Register</a>
             </>
           ) : (
             <>

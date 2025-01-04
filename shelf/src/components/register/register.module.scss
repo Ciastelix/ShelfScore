@@ -1,7 +1,114 @@
-/*
- * Replace this with your own classes
- *
- * e.g.
- * .container {
- * }
-*/
+$primary-color: #740f35;
+$secondary-color: #74580f;
+$tertiary-color: #0f7458;
+
+.register-form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+  }
+
+  .form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+
+    label {
+      position: absolute;
+      top: 50%;
+      left: 0.75rem;
+      transform: translateY(-50%);
+      background-color: #f9f9f9;
+      padding: 0 0.25rem;
+      transition: all 0.2s ease;
+      pointer-events: none;
+      font-size: 1rem;
+      color: #999;
+
+      @media (max-width: 480px) {
+        font-size: 0.875rem;
+      }
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      outline: none;
+
+      @media (max-width: 480px) {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+      }
+
+      &:focus + label,
+      &:not(:placeholder-shown) + label {
+        top: -0.5rem;
+        left: 0.5rem;
+        font-size: 0.75rem;
+        color: $primary-color;
+
+        @media (max-width: 480px) {
+          top: -0.4rem;
+          left: 0.4rem;
+          font-size: 0.625rem;
+        }
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    @media (max-width: 480px) {
+      align-items: stretch;
+    }
+
+    button {
+      padding: 0.75rem 1.5rem;
+      background-color: $primary-color;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+
+      @media (max-width: 480px) {
+        width: 100%;
+        padding: 0.5rem;
+        font-size: 0.875rem;
+      }
+
+      &:hover {
+        background-color: $secondary-color;
+      }
+    }
+  }
+
+  .terms {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #666;
+
+    a {
+      color: $primary-color;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

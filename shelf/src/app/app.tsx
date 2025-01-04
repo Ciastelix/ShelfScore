@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router';
 import Login from '../components/login/login';
 import Profile from '../components/profile/profile';
+import Register from '../components/register/register';
 
 export function App() {
   const [email, setEmail] = useState('');
@@ -46,6 +47,7 @@ export function App() {
             />
           }
         />
+        <Route path="/register" element={<Register />} />
         <Route path="/profile/:id" element={<Profile />}></Route>
         <Route path="*" element={<h1>Page not found</h1>} />
       </Routes>
