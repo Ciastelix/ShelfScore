@@ -58,63 +58,65 @@ export function Register() {
   };
 
   return (
-    <div className={styles['register-form']}>
-      <form>
-        <div className={styles['form-group']}>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder=" "
-            value={username}
-            onChange={handleUsernameChange}
-            required
-          />
-          <label htmlFor="username">Username</label>
-        </div>
-        <div className={styles['form-group']}>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder=" "
-            value={email}
-            onChange={handleEmailChange}
-            required
-          />
-          <label htmlFor="email">Email</label>
-        </div>
-        <div className={styles['form-group']}>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder=" "
-            value={password}
-            onChange={handlePasswordChange}
-            required
-          />
-          <label htmlFor="password">Password</label>
-        </div>
-        <div className={styles['form-group']}>
-          <input
-            type="password"
-            id="retype-password"
-            name="retype-password"
-            placeholder=" "
-            value={retypePassword}
-            onChange={handleRetypePasswordChange}
-            required
-          />
-          <label htmlFor="retype-password">Retype Password</label>
-        </div>
+    <div className={styles['register-container']}>
+      <div className={styles['register-form']}>
+        <form>
+          <div className={styles['form-group']}>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder=" "
+              value={username}
+              onChange={handleUsernameChange}
+              required
+            />
+            <label htmlFor="username">Username</label>
+          </div>
+          <div className={styles['form-group']}>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder=" "
+              value={email}
+              onChange={handleEmailChange}
+              required
+            />
+            <label htmlFor="email">Email</label>
+          </div>
+          <div className={styles['form-group']}>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder=" "
+              value={password}
+              onChange={handlePasswordChange}
+              required
+            />
+            <label htmlFor="password">Password</label>
+          </div>
+          <div className={styles['form-group']}>
+            <input
+              type="password"
+              id="retype-password"
+              name="retype-password"
+              placeholder=" "
+              value={retypePassword}
+              onChange={handleRetypePasswordChange}
+              required
+            />
+            <label htmlFor="retype-password">Retype Password</label>
+          </div>
 
-        <div className={styles['form-actions']}>
-          <button type="submit" onClick={register}>
-            Register
-          </button>
-        </div>
-      </form>
+          <div className={styles['form-actions']}>
+            <button type="submit" onClick={register}>
+              Register
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
