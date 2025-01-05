@@ -35,7 +35,7 @@ export function Register() {
     }
     try {
       const res = await axios.post(
-        'http://localhost:8000/users/register',
+        'http://localhost:8000/users/',
         {
           username: username,
           email: email,
@@ -43,14 +43,13 @@ export function Register() {
         },
         {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
           },
         }
       );
-      if (res.status === 200) {
+      if (res.status === 201) {
         console.log(res);
-        cookies.set('token', res.data.access_token);
-        window.location.href = '/';
+        // window.location.href = '/';
       }
     } catch (err) {
       console.log(err);
