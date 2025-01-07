@@ -9,6 +9,7 @@ import { Route, Routes } from 'react-router';
 import Login from '../components/login/login';
 import Profile from '../components/profile/profile';
 import Register from '../components/register/register';
+import { ToastContainer } from 'react-toastify';
 
 export function App() {
   const [email, setEmail] = useState('');
@@ -16,12 +17,10 @@ export function App() {
 
   useEffect(() => {
     const handleBeforeUnload = (event: any) => {
-      // Custom logic to run before the page is closed
       console.log('Page is about to be closed!');
 
-      // Optional: Show a confirmation dialog
       event.preventDefault();
-      event.returnValue = ''; // Some browsers require returnValue to be set.
+      event.returnValue = '';
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
@@ -51,6 +50,18 @@ export function App() {
         <Route path="/profile/:id" element={<Profile />}></Route>
         <Route path="*" element={<h1>Page not found</h1>} />
       </Routes>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </div>
   );
 }

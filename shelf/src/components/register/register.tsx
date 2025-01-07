@@ -1,8 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import styles from './register.module.scss';
 import axios from 'axios';
-import Cookies from 'universal-cookie';
-
+import { toast } from 'react-toastify';
 export function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -25,12 +24,12 @@ export function Register() {
     setRetypePassword(e.target.value);
   };
 
-  const cookies = new Cookies(null, { path: '/' });
-
   const register = async (e: any) => {
     e.preventDefault();
     if (password !== retypePassword) {
-      alert('Passwords do not match');
+      toast.error('Passwords do not match!');
+      setRetypePassword('');
+      setPassword('');
       return;
     }
     try {
@@ -47,12 +46,18 @@ export function Register() {
           },
         }
       );
+      // TODO: add loading spinner
       if (res.status === 201) {
-        console.log(res);
-        // window.location.href = '/';
+        toast.success('User registered successfully! You can now login.');
+        setTimeout(() => {
+          window.location.replace('/');
+        }, 5000);
       }
     } catch (err) {
+      toast.error('Error registering user');
       console.log(err);
+      setRetypePassword('');
+      setPassword('');
     }
   };
 

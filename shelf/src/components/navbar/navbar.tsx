@@ -29,6 +29,7 @@ export function Navbar() {
 
   const toggleLogin = (e: React.MouseEvent) => {
     e.preventDefault();
+
     if (showLogin) {
       setFadeOut(true);
       setTimeout(() => {

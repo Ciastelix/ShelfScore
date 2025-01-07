@@ -2,7 +2,7 @@ import { ChangeEvent } from 'react';
 import styles from './login.module.scss';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-
+import { toast } from 'react-toastify';
 interface LoginProps {
   email: string;
   password: string;
@@ -36,12 +36,13 @@ export function Login({ email, password, setEmail, setPassword }: LoginProps) {
           },
         }
       );
+      // TODO: add loading
       if (res.status === 200) {
         console.log(res);
         cookies.set('token', res.data.access_token);
-        window.location.href = '/';
       }
     } catch (err) {
+      toast.error('Username or password is incorrect!');
       console.log(err);
     }
   };
