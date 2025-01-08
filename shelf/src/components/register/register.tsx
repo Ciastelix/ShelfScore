@@ -53,7 +53,7 @@ export function Register() {
         toast.success('User registered successfully! You can now login.');
         setTimeout(() => {
           window.location.replace('/');
-        }, 5000);
+        }, 3000);
       }
     } catch (err) {
       toast.error('Error registering user');

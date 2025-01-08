@@ -2,12 +2,39 @@ $primary-color: #740f35;
 $secondary-color: #74580f;
 $tertiary-color: #0f7458;
 
-.container {
+.profile-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  gap: 10px;
+}
+
+.left-container,
+.center-container,
+.right-container {
   background-color: $tertiary-color;
   color: white;
   padding: 20px;
-  border-radius: 10px;
   text-align: center;
+  min-height: 90vh;
+}
+
+.left-container {
+  flex: 1;
+  max-width: 25%;
+  border-right: 1px solid white;
+}
+
+.center-container {
+  flex: 2;
+  max-width: 50%;
+  border-right: 1px solid white;
+}
+
+.right-container {
+  flex: 1;
+  max-width: 25%;
 }
 
 h1 {
