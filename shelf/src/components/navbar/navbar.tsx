@@ -110,6 +110,14 @@ export function Navbar() {
     fetchUserData();
   }, [cookies]);
 
+  const handleLoginSuccess = () => {
+    setFadeOut(true);
+    setTimeout(() => {
+      setShowLogin(false);
+      setFadeOut(false);
+    }, 500);
+  };
+
   return (
     <>
       <nav className={styles['navbar']}>
@@ -160,6 +168,7 @@ export function Navbar() {
               password={password}
               setEmail={setEmail}
               setPassword={setPassword}
+              onLoginSuccess={handleLoginSuccess}
             />
           </div>
         </div>

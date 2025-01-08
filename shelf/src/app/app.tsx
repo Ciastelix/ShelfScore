@@ -14,6 +14,15 @@ import { ToastContainer } from 'react-toastify';
 export function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [fadeOut, setFadeOut] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const handleLoginSuccess = () => {
+    setFadeOut(true);
+    setTimeout(() => {
+      setShowLogin(false);
+      setFadeOut(false);
+    }, 500);
+  };
 
   useEffect(() => {
     const handleBeforeUnload = (event: any) => {
@@ -43,6 +52,7 @@ export function App() {
               password={password}
               setEmail={setEmail}
               setPassword={setPassword}
+              onLoginSuccess={handleLoginSuccess}
             />
           }
         />
@@ -51,10 +61,10 @@ export function App() {
         <Route path="*" element={<h1>Page not found</h1>} />
       </Routes>
       <ToastContainer
-        position="bottom-center"
+        position="top-center"
         autoClose={5000}
         hideProgressBar
-        newestOnTop
+        newestOnTop={false}
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
