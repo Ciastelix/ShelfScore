@@ -24,7 +24,7 @@ export function Navbar() {
   const logout = async () => {
     cookies.remove('token');
     setToken(undefined);
-    setImagePath('/images/profiles/default.png');
+    setUserId('');
   };
 
   const toggleLogin = (e: React.MouseEvent) => {
@@ -115,6 +115,7 @@ export function Navbar() {
     setTimeout(() => {
       setShowLogin(false);
       setFadeOut(false);
+      window.location.replace('/');
     }, 500);
   };
 

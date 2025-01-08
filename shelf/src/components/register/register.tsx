@@ -2,11 +2,13 @@ import { ChangeEvent, useState } from 'react';
 import styles from './register.module.scss';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+
 export function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [retypePassword, setRetypePassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -32,6 +34,7 @@ export function Register() {
       setPassword('');
       return;
     }
+    setLoading(true);
     try {
       const res = await axios.post(
         'http://localhost:8000/users/',
@@ -46,7 +49,6 @@ export function Register() {
           },
         }
       );
-      // TODO: add loading spinner
       if (res.status === 201) {
         toast.success('User registered successfully! You can now login.');
         setTimeout(() => {
@@ -58,11 +60,18 @@ export function Register() {
       console.log(err);
       setRetypePassword('');
       setPassword('');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className={styles['register-container']}>
+      {loading && (
+        <div className={styles['loading-overlay']}>
+          <div className={styles['spinner']}></div>
+        </div>
+      )}
       <div className={styles['register-form']}>
         <form>
           <div className={styles['form-group']}>
@@ -115,7 +124,7 @@ export function Register() {
           </div>
 
           <div className={styles['form-actions']}>
-            <button type="submit" onClick={register}>
+            <button type="submit" onClick={register} disabled={loading}>
               Register
             </button>
           </div>
