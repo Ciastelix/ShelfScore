@@ -12,6 +12,8 @@ import Register from '../components/register/register';
 import { ToastContainer } from 'react-toastify';
 import Authors from '../components/authors/authors';
 import Author from '../components/author/author';
+import Books from '../components/books/books';
+import Book from '../components/book/book';
 export function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,7 +26,7 @@ export function App() {
       setFadeOut(false);
     }, 500);
   };
-
+  // TODO create generic list component to display authors and books
   useEffect(() => {
     const handleBeforeUnload = (event: any) => {
       console.log('Page is about to be closed!');
@@ -61,6 +63,8 @@ export function App() {
         <Route path="/profile/:id" element={<Profile />}></Route>
         <Route path="/authors" element={<Authors />} />
         <Route path="/author/:id" element={<Author />} />
+        <Route path="/books" element={<Books />} />
+        <Route path="/book/:id" element={<Book />} />
         <Route path="*" element={<h1>Page not found</h1>} />
       </Routes>
       <ToastContainer

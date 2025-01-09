@@ -124,16 +124,18 @@ export function Navbar() {
   return (
     <>
       <nav className={styles['navbar']}>
-        <div className={styles['logo']}>ShelfScore</div>
+        <Link to="/" className={styles['logo']}>
+          ShelfScore
+        </Link>
         <div
           className={`${styles['menu']} ${isOpen ? styles['active'] : ''}`}
           ref={menuRef}
         >
           {!token ? (
             <>
-              <a href="#login" onClick={toggleLogin}>
+              <Link to="#login" onClick={toggleLogin}>
                 Login
-              </a>
+              </Link>
               <Link to="/register">Register</Link>
             </>
           ) : (
@@ -144,6 +146,8 @@ export function Navbar() {
               >
                 <img src={imagePath} alt="Profile" /> Profile
               </Link>
+              <Link to="/books">Books</Link>
+              <Link to="/authors">Authors</Link>
               <Link to="#logout" onClick={logout}>
                 Logout
               </Link>

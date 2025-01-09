@@ -23,13 +23,13 @@ def read_books(
 
 @router.post("/", response_model=BookInDB, status_code=status.HTTP_201_CREATED)
 @inject
-def create_book(
+async def create_book(
     book: BookInCreate,
     image: UploadFile = File(...),
     book_service: BookService = Depends(Provide[Container.book_service]),
     token: str = Depends(oauth2_scheme),
 ) -> BookInDB:
-    return book_service.add(book, image)
+    return await book_service.add(book, image)
 
 
 @router.get("/{book_id}", response_model=BookInDB, status_code=status.HTTP_200_OK)
