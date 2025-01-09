@@ -17,6 +17,7 @@ app.include_router(router)
 
 from fastapi.middleware.cors import CORSMiddleware
 
+# TODO: in author model add: birthday, photo
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

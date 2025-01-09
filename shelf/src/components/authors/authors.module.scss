@@ -1,0 +1,152 @@
+$primary-color: #740f35;
+$secondary-color: #74580f;
+$tertiary-color: #0f7458;
+
+.container {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center;
+  padding: 20px;
+  min-height: 100vh; /* Ensure the container takes the full height of the viewport */
+  position: relative; /* Ensure the container is the reference for absolute positioning */
+}
+
+.search-input {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 400px;
+  font-size: 16px;
+}
+
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center the cards horizontally */
+  width: 100%;
+  position: relative;
+}
+
+.arrow-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 100%; /* Take the full height of the container */
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0); /* Transparent background */
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.1); /* Dim effect on hover */
+  }
+}
+
+.arrow-container:first-of-type {
+  left: 0;
+}
+
+.arrow-container:last-of-type {
+  right: 0;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping to the next line */
+  justify-content: center; /* Center the cards horizontally */
+  gap: 20px; /* Add space between cards */
+  width: 100%; /* Ensure it spans the full width */
+}
+
+.card-link {
+  text-decoration: none; /* Remove underline from links */
+  color: inherit; /* Inherit text color */
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 10px;
+  width: 100%;
+  max-width: 300px; /* Adjust the width as needed */
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s; /* Add transition for smooth effect */
+
+  &:hover {
+    transform: translateY(-5px); /* Slightly lift the card */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+  }
+}
+
+.card h2 {
+  color: $primary-color;
+  margin-bottom: 10px;
+}
+
+.card p {
+  color: #666;
+}
+
+.arrow {
+  color: black;
+  font-size: 36px; /* Increase the font size */
+  transition: color 0.2s;
+
+  &:hover {
+    color: #666;
+  }
+}
+
+.ripple-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.3);
+  transform: scale(0);
+  animation: ripple 0.6s linear;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .arrow-container {
+    width: 40px;
+  }
+
+  .arrow {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .arrow-container {
+    width: 30px;
+  }
+
+  .arrow {
+    font-size: 24px;
+  }
+}

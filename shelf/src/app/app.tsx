@@ -10,7 +10,8 @@ import Login from '../components/login/login';
 import Profile from '../components/profile/profile';
 import Register from '../components/register/register';
 import { ToastContainer } from 'react-toastify';
-
+import Authors from '../components/authors/authors';
+import Author from '../components/author/author';
 export function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -58,6 +59,8 @@ export function App() {
         />
         <Route path="/register" element={<Register />} />
         <Route path="/profile/:id" element={<Profile />}></Route>
+        <Route path="/authors" element={<Authors />} />
+        <Route path="/author/:id" element={<Author />} />
         <Route path="*" element={<h1>Page not found</h1>} />
       </Routes>
       <ToastContainer

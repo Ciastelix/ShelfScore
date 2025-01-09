@@ -3,6 +3,7 @@ import styles from './navbar.module.scss';
 import { Login } from '../login/login';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
+import { Link } from 'react-router';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +26,7 @@ export function Navbar() {
     cookies.remove('token');
     setToken(undefined);
     setUserId('');
+    window.location.replace('/');
   };
 
   const toggleLogin = (e: React.MouseEvent) => {
@@ -132,16 +134,19 @@ export function Navbar() {
               <a href="#login" onClick={toggleLogin}>
                 Login
               </a>
-              <a href="/register">Register</a>
+              <Link to="/register">Register</Link>
             </>
           ) : (
             <>
-              <a href={`/profile/${userId}`} className={styles['profile-link']}>
+              <Link
+                to={`/profile/${userId}`}
+                className={styles['profile-link']}
+              >
                 <img src={imagePath} alt="Profile" /> Profile
-              </a>
-              <a href="#logout" onClick={logout}>
+              </Link>
+              <Link to="#logout" onClick={logout}>
                 Logout
-              </a>
+              </Link>
             </>
           )}
         </div>

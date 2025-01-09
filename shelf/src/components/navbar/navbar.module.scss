@@ -40,6 +40,7 @@ $tertiary-color: #0f7458;
 
   .menu {
     display: flex;
+    align-items: center; /* Ensure items are centered vertically */
     gap: 1rem;
     font-family: 'Kanit', sans-serif;
     font-weight: 300;

@@ -22,19 +22,19 @@ class AuthorRepository:
 
     def get_all(self) -> list[AuthorInDB]:
         with self.session_factory() as session:
-            return session.query(AuthorInDB).all()
+            return session.query(Author).all()
 
     def get_by_id(self, author_id: UUID) -> AuthorInDB:
         if type(author_id) == str:
             author_id = UUID(author_id)
         with self.session_factory() as session:
-            return session.query(AuthorInDB).filter_by(id=author_id).first()
+            return session.query(Author).filter_by(id=author_id).first()
 
     def update(self, author_id: UUID, author_new: AuthorInUpdate) -> AuthorInDB:
         if type(author_id) == str:
             author_id = UUID(author_id)
         with self.session_factory() as session:
-            author = session.query(AuthorInDB).filter_by(id=author_id).first()
+            author = session.query(Author).filter_by(id=author_id).first()
             for key, value in author_new.dict(exclude_unset=True).items():
                 setattr(author, key, value)
             session.commit()
@@ -45,7 +45,7 @@ class AuthorRepository:
         if type(author_id) == str:
             author_id = UUID(author_id)
         with self.session_factory() as session:
-            author = session.query(AuthorInDB).filter_by(id=author_id).first()
+            author = session.query(Author).filter_by(id=author_id).first()
             session.delete(author)
             session.commit()
             return None
