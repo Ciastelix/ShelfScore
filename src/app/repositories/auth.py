@@ -16,7 +16,8 @@ from typing import Callable
 
 from uuid import UUID
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/login/")
+
 
 SECRET_KEY = environ.get("JWT_SECRET") or "KUGhGukGHkuGKYfgiyt75igtyrt"
 ALGORITHM = environ.get("JWT_ALGORITHM") or "HS256"

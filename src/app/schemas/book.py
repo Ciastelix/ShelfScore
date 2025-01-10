@@ -9,7 +9,6 @@ class BookInCreate(BaseModel):
     genre: str
     year: int
     description: str
-    image: str
 
 
 class BookInUpdate(BaseModel):

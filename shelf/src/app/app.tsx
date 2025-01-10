@@ -26,7 +26,6 @@ export function App() {
       setFadeOut(false);
     }, 500);
   };
-  // TODO create generic list component to display authors and books
   useEffect(() => {
     const handleBeforeUnload = (event: any) => {
       console.log('Page is about to be closed!');

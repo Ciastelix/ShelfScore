@@ -58,14 +58,13 @@ def delete_user(
 
 @router.post(
     "/login",
-    response_model=Dict[str, Any],
     status_code=status.HTTP_200_OK,
 )
 @inject
 def login_user(
     form_data: OAuth2PasswordRequestForm = Depends(),
     auth_service: AuthService = Depends(Provide[Container.auth_service]),
-) -> Dict[str, Any]:
+):
     return auth_service.login(form_data.username, form_data.password)
 
 

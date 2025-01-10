@@ -4,13 +4,10 @@ from dependency_injector.wiring import Provide, inject
 from services.review import ReviewService
 from container import Container
 from uuid import UUID
-from fastapi.security import OAuth2PasswordBearer
 from typing import List
 from utils.current_user import get_current_user
 
 router = APIRouter()
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 @router.get("/", response_model=List[ReviewInDB], status_code=status.HTTP_200_OK)
@@ -23,10 +20,10 @@ def read_reviews(
 
 @router.post("/", response_model=ReviewInDB, status_code=status.HTTP_201_CREATED)
 @inject
-def create_review(
+async def create_review(
     review: ReviewInCreate,
     review_service: ReviewService = Depends(Provide[Container.review_service]),
-    token: str = Depends(oauth2_scheme),
+    user=Depends(get_current_user),
 ) -> ReviewInDB:
     return review_service.add(review)
 
@@ -42,20 +39,20 @@ def read_review(
 
 @router.put("/{review_id}", response_model=ReviewInDB, status_code=status.HTTP_200_OK)
 @inject
-def update_review(
+async def update_review(
     review_id: UUID,
     review: ReviewInUpdate,
     review_service: ReviewService = Depends(Provide[Container.review_service]),
-    token: str = Depends(oauth2_scheme),
+    user=Depends(get_current_user),
 ) -> ReviewInDB:
     return review_service.update(review_id, review)
 
 
 @router.delete("/{review_id}", status_code=status.HTTP_204_NO_CONTENT)
 @inject
-def delete_review(
+async def delete_review(
     review_id: UUID,
     review_service: ReviewService = Depends(Provide[Container.review_service]),
-    token: str = Depends(oauth2_scheme),
+    user=Depends(get_current_user),
 ) -> None:
     return review_service.delete(review_id)
