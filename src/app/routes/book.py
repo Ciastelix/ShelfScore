@@ -23,11 +23,21 @@ def read_books(
 @inject
 async def create_book(
     book: BookInCreate,
-    image: UploadFile = File(...),
     book_service: BookService = Depends(Provide[Container.book_service]),
     user=Depends(get_current_user),
 ) -> BookInDB:
-    return await book_service.add(book, image)
+    return await book_service.add(book)
+
+
+@router.put("/{book_id}/image", status_code=status.HTTP_200_OK)
+@inject
+async def update_image(
+    book_id: UUID,
+    image: UploadFile = File(...),
+    book_service: BookService = Depends(Provide[Container.book_service]),
+    user=Depends(get_current_user),
+):
+    return await book_service.update_image(book_id, image)
 
 
 @router.get("/{book_id}", response_model=BookInDB, status_code=status.HTTP_200_OK)

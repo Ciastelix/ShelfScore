@@ -26,7 +26,7 @@ class ImageService:
 
             # Rescale the image if width and height are provided
             if width and height:
-                img = img.resize((width, height), Image.ANTIALIAS)
+                img = img.resize((width, height), Image.LANCZOS)
                 img.save(image_path, "PNG")
 
         return image_path

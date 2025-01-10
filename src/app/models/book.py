@@ -14,7 +14,7 @@ class Book(Base):
     genre = Column(String, nullable=False)
     year = Column(Integer, nullable=False)
     description = Column(String, nullable=False)
-    image = Column(String, nullable=False)
+    image = Column(String, nullable=True)
     is_active = Column(Boolean, default=True)
 
     author = relationship("Author", back_populates="books")

@@ -9,8 +9,8 @@ class BookService:
     def __init__(self, book_repository: BookRepository) -> None:
         self.book_repository = book_repository
 
-    async def add(self, book: BookInCreate, image: UploadFile) -> Book:
-        return await self.book_repository.add(book, image)
+    async def add(self, book: BookInCreate) -> Book:
+        return await self.book_repository.add(book)
 
     def get_all(self) -> list[Book]:
         return self.book_repository.get_all()
@@ -23,3 +23,6 @@ class BookService:
 
     def delete(self, book_id: UUID) -> None:
         return self.book_repository.delete(book_id)
+
+    async def update_image(self, book_id: UUID, image: UploadFile) -> Book:
+        return await self.book_repository.update_image(book_id, image)

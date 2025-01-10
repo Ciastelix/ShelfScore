@@ -17,18 +17,25 @@ class BookRepository:
         self.session_factory = session_factory
         self.image_service = image_service
 
-    async def add(self, book: BookInCreate, image: UploadFile) -> Book:
+    async def add(self, book: BookInCreate) -> Book:
         with self.session_factory() as session:
-            image_path = await self.image_service.save_image(
-                book.title.replace(" ", "_"), image, 200, 300
-            )
             book_data = book.model_dump()
-            book_data["image"] = image_path
             book = Book(**book_data)
             session.add(book)
             session.commit()
             session.refresh(book)
         return book
+
+    async def update_image(self, book_id: UUID, image: UploadFile) -> Book:
+        if type(book_id) == str:
+            book_id = UUID(book_id)
+        with self.session_factory() as session:
+            book = session.query(Book).filter_by(id=book_id).first()
+            image_path = await self.image_service.save_image(book.id, image, 200, 300)
+            book.image = image_path
+            session.commit()
+            session.refresh(book)
+            return book
 
     def get_all(self) -> list[Book]:
         with self.session_factory() as session:
