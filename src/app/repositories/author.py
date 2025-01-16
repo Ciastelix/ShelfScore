@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from schemas.author import AuthorInCreate, AuthorInDB, AuthorInUpdate
 from models.author import Author
 from uuid import UUID
+from fastapi import UploadFile
 
 
 class AuthorRepository:
@@ -37,6 +38,19 @@ class AuthorRepository:
             author = session.query(Author).filter_by(id=author_id).first()
             for key, value in author_new.dict(exclude_unset=True).items():
                 setattr(author, key, value)
+            session.commit()
+            session.refresh(author)
+            return author
+
+    async def update_image(self, author_id: UUID, image: UploadFile) -> AuthorInDB:
+        if type(author_id) == str:
+            author_id = UUID(author_id)
+        with self.session_factory() as session:
+            author = session.query(Author).filter_by(id=author_id).first()
+            image_path = await self.image_service.save_image(
+                author.id, image, "authors", 200, 300
+            )
+            author.image = image_path
             session.commit()
             session.refresh(author)
             return author

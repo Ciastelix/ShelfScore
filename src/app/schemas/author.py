@@ -7,6 +7,7 @@ class AuthorInCreate(BaseModel):
     name: str
     surname: str
     description: str
+    year_born: str
 
 
 class AuthorInUpdate(BaseModel):
@@ -14,6 +15,7 @@ class AuthorInUpdate(BaseModel):
     surname: Optional[str]
     description: Optional[str]
     is_active: Optional[bool]
+    year_born: Optional[str]
 
     class Config:
         from_model = True
@@ -25,3 +27,5 @@ class AuthorInDB(BaseModel):
     surname: str
     description: str
     is_active: bool
+    year_born: str
+    photo: Optional[str]

@@ -35,6 +35,18 @@ def read_author(
     return author_service.get_by_id(author_id)
 
 
+@router.patch(
+    "/{author_id}/image", response_model=AuthorInDB, status_code=status.HTTP_200_OK
+)
+@inject
+def update_author_image(
+    author_id: UUID,
+    image: str,
+    author_service: AuthorService = Depends(Provide[Container.author_service]),
+) -> AuthorInDB:
+    return author_service.update_image(author_id, image)
+
+
 @router.put("/{author_id}", response_model=AuthorInDB, status_code=status.HTTP_200_OK)
 @inject
 def update_author(

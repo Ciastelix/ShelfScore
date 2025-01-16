@@ -16,6 +16,9 @@ class AuthorService:
     def get_by_id(self, author_id: UUID) -> AuthorInDB:
         return self.author_repository.get_by_id(author_id)
 
+    async def update_image(self, author_id: UUID, image: str) -> AuthorInDB:
+        return self.author_repository.update_image(author_id, image)
+
     def update(self, author_id: UUID, author_new: AuthorInUpdate) -> AuthorInDB:
         return self.author_repository.update(author_id, author_new)
 

@@ -31,7 +31,9 @@ class BookRepository:
             book_id = UUID(book_id)
         with self.session_factory() as session:
             book = session.query(Book).filter_by(id=book_id).first()
-            image_path = await self.image_service.save_image(book.id, image, 200, 300)
+            image_path = await self.image_service.save_image(
+                book.id, image, "books", 200, 300
+            )
             book.image = image_path
             session.commit()
             session.refresh(book)
