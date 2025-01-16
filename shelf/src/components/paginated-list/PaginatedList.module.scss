@@ -57,11 +57,11 @@ $tertiary-color: #0f7458;
 }
 
 .cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
   gap: 20px;
   width: 100%;
+  margin: 0 70px; /* Add margin to both sides */
 }
 
 .card-link {
@@ -76,8 +76,8 @@ $tertiary-color: #0f7458;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin: 10px;
-  width: 14rem;
-  height: 10rem;
+  width: 100%;
+  height: auto;
   text-align: center;
   transition: transform 0.2s, box-shadow 0.2s;
   display: flex;
@@ -133,6 +133,14 @@ $tertiary-color: #0f7458;
   }
 }
 
+.card-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
 @media (max-width: 768px) {
   .arrow-container {
     width: 40px;
@@ -140,6 +148,10 @@ $tertiary-color: #0f7458;
 
   .arrow {
     font-size: 28px;
+  }
+
+  .cards-container {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -150,5 +162,9 @@ $tertiary-color: #0f7458;
 
   .arrow {
     font-size: 24px;
+  }
+
+  .cards-container {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

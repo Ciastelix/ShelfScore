@@ -7,6 +7,7 @@ interface Book {
   author_id: string;
   id: string;
   title: string;
+  image: string;
 }
 
 export function Books() {

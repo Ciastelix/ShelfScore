@@ -48,9 +48,9 @@ class AuthorRepository:
         with self.session_factory() as session:
             author = session.query(Author).filter_by(id=author_id).first()
             image_path = await self.image_service.save_image(
-                author.id, image, "authors", 200, 300
+                author.id, image, "authors", 200, 200
             )
-            author.image = image_path
+            author.photo = "/".join(image_path.split("/")[3:])
             session.commit()
             session.refresh(author)
             return author

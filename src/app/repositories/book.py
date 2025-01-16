@@ -34,7 +34,8 @@ class BookRepository:
             image_path = await self.image_service.save_image(
                 book.id, image, "books", 200, 300
             )
-            book.image = image_path
+
+            book.image = "/".join(image_path.split("/")[3:])
             session.commit()
             session.refresh(book)
             return book

@@ -9,12 +9,9 @@ interface PaginatedListProps<T> {
   itemsPerPage?: number;
 }
 
-export function PaginatedList<T extends { id: string }>({
-  items,
-  linkPrefix,
-  searchKeys,
-  itemsPerPage = 35,
-}: PaginatedListProps<T>) {
+export function PaginatedList<
+  T extends { id: string; image?: string; photo?: string; name?: string }
+>({ items, linkPrefix, searchKeys, itemsPerPage = 14 }: PaginatedListProps<T>) {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -120,6 +117,15 @@ export function PaginatedList<T extends { id: string }>({
     rippleContainer!.appendChild(ripple);
   };
 
+  const getDefaultImage = (prefix: string) => {
+    if (prefix.includes('book')) {
+      return '/images/books/default.png';
+    } else if (prefix.includes('author')) {
+      return '/images/authors/default.png';
+    }
+    return '/images/default.png';
+  };
+
   return (
     <div className={styles['container']}>
       <input
@@ -146,6 +152,19 @@ export function PaginatedList<T extends { id: string }>({
               className={styles['card-link']}
             >
               <div className={styles['card']}>
+                <img
+                  src={
+                    (item.image == 'default.png'
+                      ? getDefaultImage(linkPrefix)
+                      : item.image) ||
+                    (item.photo == 'default.png'
+                      ? getDefaultImage(linkPrefix)
+                      : item.photo) ||
+                    getDefaultImage(linkPrefix)
+                  }
+                  alt={item.name || 'Item image'}
+                  className={styles['card-image']}
+                />
                 {searchKeys.map((key, index) => (
                   <p
                     key={key as string}
