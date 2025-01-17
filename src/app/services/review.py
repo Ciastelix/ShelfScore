@@ -11,8 +11,8 @@ class ReviewService:
     def add(self, review: ReviewInCreate) -> Review:
         return self.review_repository.add(review)
 
-    def get_all(self) -> list[Review]:
-        return self.review_repository.get_all()
+    def get_all(self, offset: int, limit: int, filter: str) -> list[Review]:
+        return self.review_repository.get_all(offset, limit, filter)
 
     def get_by_id(self, review_id: UUID) -> Review:
         return self.review_repository.get_by_id(review_id)

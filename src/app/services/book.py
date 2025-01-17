@@ -12,8 +12,8 @@ class BookService:
     async def add(self, book: BookInCreate) -> Book:
         return await self.book_repository.add(book)
 
-    def get_all(self) -> list[Book]:
-        return self.book_repository.get_all()
+    def get_all(self, offset: int, limit: int, filter: str) -> list[Book]:
+        return self.book_repository.get_all(offset, limit, filter)
 
     def get_by_id(self, book_id: UUID) -> Book:
         return self.book_repository.get_by_id(book_id)

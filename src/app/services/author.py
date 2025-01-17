@@ -10,8 +10,8 @@ class AuthorService:
     def add(self, author: AuthorInCreate) -> AuthorInDB:
         return self.author_repository.add(author)
 
-    def get_all(self) -> list[AuthorInDB]:
-        return self.author_repository.get_all()
+    def get_all(self, offset: int, limit: int, filter: str) -> list[AuthorInDB]:
+        return self.author_repository.get_all(offset, limit, filter)
 
     def get_by_id(self, author_id: UUID) -> AuthorInDB:
         return self.author_repository.get_by_id(author_id)

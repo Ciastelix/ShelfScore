@@ -20,9 +20,9 @@ class ReviewRepository:
             session.refresh(review)
         return review
 
-    def get_all(self) -> list[Review]:
+    def get_all(self, offset: int, limit: int) -> list[Review]:
         with self.session_factory() as session:
-            return session.query(Review).all()
+            return session.query(Review).offset(offset).limit(limit).all()
 
     def get_by_id(self, review_id: UUID) -> Review:
         if type(review_id) == str:

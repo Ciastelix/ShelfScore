@@ -13,9 +13,12 @@ router = APIRouter()
 @router.get("/", response_model=List[ReviewInDB], status_code=status.HTTP_200_OK)
 @inject
 def read_reviews(
+    offset: int = 0,
+    limit: int = 10,
+    filter: str = "",
     review_service: ReviewService = Depends(Provide[Container.review_service]),
 ) -> List[ReviewInDB]:
-    return review_service.get_all()
+    return review_service.get_all(offset, limit, filter)
 
 
 @router.post("/", response_model=ReviewInDB, status_code=status.HTTP_201_CREATED)

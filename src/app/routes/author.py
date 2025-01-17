@@ -12,9 +12,12 @@ router = APIRouter()
 @router.get("/", response_model=List[AuthorInDB], status_code=status.HTTP_200_OK)
 @inject
 def read_authors(
+    offset: int = 0,
+    limit: int = 10,
+    filter: str = "",
     author_service: AuthorService = Depends(Provide[Container.author_service]),
 ) -> List[AuthorInDB]:
-    return author_service.get_all()
+    return author_service.get_all(offset, limit, filter)
 
 
 @router.post("/", response_model=AuthorInDB, status_code=status.HTTP_201_CREATED)

@@ -40,9 +40,17 @@ class BookRepository:
             session.refresh(book)
             return book
 
-    def get_all(self) -> list[Book]:
+    def get_all(self, offset: int, limit: int, filter: str) -> list[Book]:
         with self.session_factory() as session:
-            return session.query(Book).all()
+            if not filter:
+                return session.query(Book).offset(offset).limit(limit).all()
+            return (
+                session.query(Book)
+                .filter(Book.title.ilike(f"%{filter}%"))
+                .offset(offset)
+                .limit(limit)
+                .all()
+            )
 
     def get_by_id(self, book_id: UUID) -> Book:
         if type(book_id) == str:

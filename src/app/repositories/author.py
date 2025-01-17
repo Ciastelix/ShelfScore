@@ -21,9 +21,17 @@ class AuthorRepository:
             session.refresh(author)
         return author
 
-    def get_all(self) -> list[AuthorInDB]:
+    def get_all(self, offset: int, limit: int, filter: str) -> list[AuthorInDB]:
         with self.session_factory() as session:
-            return session.query(Author).all()
+            if not filter:
+                return session.query(Author).offset(offset).limit(limit).all()
+            return (
+                session.query(Author)
+                .filter(Author.name.ilike(f"%{filter}%"))
+                .offset(offset)
+                .limit(limit)
+                .all()
+            )
 
     def get_by_id(self, author_id: UUID) -> AuthorInDB:
         if type(author_id) == str:

@@ -14,9 +14,12 @@ router = APIRouter()
 @router.get("/", response_model=List[BookInDB], status_code=status.HTTP_200_OK)
 @inject
 def read_books(
+    offset: int = 0,
+    limit: int = 10,
+    filter: str = "",
     book_service: BookService = Depends(Provide[Container.book_service]),
 ) -> List[BookInDB]:
-    return book_service.get_all()
+    return book_service.get_all(offset, limit, filter)
 
 
 @router.post("/", response_model=BookInDB, status_code=status.HTTP_201_CREATED)
