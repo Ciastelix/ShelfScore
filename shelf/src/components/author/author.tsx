@@ -18,6 +18,11 @@ export function Author() {
       <h1>
         {author.name} {author.surname}
       </h1>
+      <img
+        src={author.photo}
+        alt={author.surname || 'Item image'}
+        className={styles['card-image']}
+      />
       <p>{author.description}</p>
     </div>
   );

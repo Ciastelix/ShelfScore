@@ -122,10 +122,11 @@ $tertiary-color: #0f7458;
 
 .login-container {
   position: absolute;
+  right: 1rem;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  margin-top: 30px;
+  margin-top: 5rem;
   min-width: 300px;
   z-index: 1000; /* Ensure it appears in front of other content */
   animation: fadeIn 0.5s ease-in-out;
@@ -134,15 +135,17 @@ $tertiary-color: #0f7458;
   }
 
   @media (max-width: 768px) {
-    justify-content: flex-end; /* Align to the right */
-    right: 0; /* Ensure it aligns to the right edge */
+    justify-content: center; /* Center the login form */
+    left: 50%; /* Center the login form */
+    transform: translateX(-50%); /* Center the login form */
   }
 
   @media (max-width: 480px) {
     min-width: 100%;
     padding: 1rem;
-    justify-content: flex-end; /* Align to the right */
-    right: 0; /* Ensure it aligns to the right edge */
+    justify-content: center; /* Center the login form */
+    left: 50%; /* Center the login form */
+    transform: translateX(-50%); /* Center the login form */
   }
 }
 
