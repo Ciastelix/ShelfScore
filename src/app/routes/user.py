@@ -8,7 +8,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from services.auth import AuthService
 from utils.current_user import get_current_user
 from services.image import ImageService
-from typing import List, Dict, Any
+from typing import List
 
 router = APIRouter()
 
@@ -30,7 +30,7 @@ def create_user(
     return user_service.add(user)
 
 
-@router.get("/{user_id}", response_model=UserInDB, status_code=status.HTTP_200_OK)
+@router.get("/u/{user_id}", response_model=UserInDB, status_code=status.HTTP_200_OK)
 @inject
 def read_user(
     user_id: UUID, user_service: UserService = Depends(Provide[Container.user_service])
@@ -86,16 +86,13 @@ async def upload_image(
     user_service: UserService = Depends(Provide[Container.user_service]),
     image_service: ImageService = Depends(Provide[Container.image_service]),
 ) -> UserInDB:
-    # Check if the uploaded file is an image
     if file.content_type not in ["image/jpeg", "image/png"]:
         raise HTTPException(status_code=400, detail="Invalid image format")
 
-    # Save the image and get the path
     image_path = await image_service.save_image(
         current_user.id, file, "profiles", 100, 100
     )
 
-    # Update the user's picture in the database
     user = user_service.add_image(current_user.id, image_path)
 
     return user
@@ -109,3 +106,17 @@ async def upload_image(
 @inject
 async def read_users_me(current_user=Depends(get_current_user)):
     return {"user": current_user, "isValid": True}
+
+
+@router.get(
+    "/books-read",
+    status_code=status.HTTP_200_OK,
+)
+@inject
+async def get_books_read_by_user_with_author(
+    user_id: UUID,
+    user_service: UserService = Depends(Provide[Container.user_service]),
+):
+    books = user_service.get_books_read_by_user_with_author(user_id)
+
+    return books

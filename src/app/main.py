@@ -17,7 +17,7 @@ app.include_router(router)
 
 from fastapi.middleware.cors import CORSMiddleware
 
-# TODO: add paths for images and sizes
+# TODO: add paths for images and sizes; add authors to books and books to authors
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

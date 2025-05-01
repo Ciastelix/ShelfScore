@@ -28,3 +28,6 @@ class UserService:
 
     def add_image(self, user_id: UUID, image_path: str) -> User:
         return self.user_repository.add_image(user_id, image_path)
+
+    def get_books_read_by_user_with_author(self, user_id: UUID):
+        return self.user_repository.get_books_read_by_user_with_author(user_id)

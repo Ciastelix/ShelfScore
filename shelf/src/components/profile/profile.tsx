@@ -8,12 +8,29 @@ export function Profile() {
 
   const [user, setUser] = useState<any>({});
   const [loading, setLoading] = useState(true);
+  const [books, setBooks] = useState<any[]>([]);
+
+  async function fetchBooks() {
+    const response = await axios.get('http://localhost:8000/users/books-read', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: {
+        user_id: id,
+      },
+    });
+    setBooks(response.data);
+  }
+
   useEffect(() => {
-    axios.get(`http://localhost:8000/users/${id}`).then((response) => {
+    axios.get(`http://localhost:8000/users/u/${id}`).then(async (response) => {
       setUser(response.data);
       setLoading(false);
+      await fetchBooks();
     });
   }, [id]);
+
+  const recentBooks = books.slice(0, 3);
 
   return (
     <div className={styles['profile-container']}>
@@ -29,11 +46,23 @@ export function Profile() {
         )}
       </div>
       <div className={styles['center-container']}>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non
-          urna vitae libero bibendum tincidunt. Integer nec odio nec nulla
-          facilisis tincidunt.
-        </p>
+        <h2>Recently Read Books</h2>
+        <div className={styles['recent-books-container']}>
+          {recentBooks.map((book) => (
+            <div key={book.id} className={styles['book-card']}>
+              <img src={`/${book.image}`} alt={book.title} />
+              <h3>{book.title}</h3>
+              <p>
+                {book.author_name} {book.author_surname}
+              </p>
+            </div>
+          ))}
+        </div>
+        {books.length > 3 && (
+          <a href="#" className={styles['show-more-link']}>
+            Show more read books ({books.length - 3})
+          </a>
+        )}
       </div>
       <div className={styles['right-container']}>
         <p>

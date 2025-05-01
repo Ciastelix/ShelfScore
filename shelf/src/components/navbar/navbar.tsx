@@ -26,7 +26,6 @@ export function Navbar() {
     cookies.remove('token');
     setToken(undefined);
     setUserId('');
-    window.location.replace('/');
   };
 
   const toggleLogin = (e: React.MouseEvent) => {
@@ -91,6 +90,7 @@ export function Navbar() {
     const fetchUserData = async () => {
       const token = cookies.get('token');
       setToken(token);
+
       try {
         const res = await axios.get('http://localhost:8000/users/me/token', {
           headers: {
@@ -117,7 +117,6 @@ export function Navbar() {
     setTimeout(() => {
       setShowLogin(false);
       setFadeOut(false);
-      window.location.replace('/');
     }, 500);
   };
 

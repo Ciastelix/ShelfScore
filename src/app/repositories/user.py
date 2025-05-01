@@ -3,6 +3,7 @@ from typing import Callable
 from sqlalchemy.orm import Session
 from schemas.user import UserInCreate, UserInUpdate, UserUpdatePassword
 from models.user import User
+from models.review import Review
 from utils.security import get_password_hash, verify_password
 from uuid import UUID
 
@@ -85,3 +86,33 @@ class UserRepository:
                 return user
             else:
                 raise ValueError("Current password is incorrect")
+
+    def get_books_read_by_user_with_author(self, user_id: UUID):
+        if type(user_id) == str:
+            user_id = UUID(user_id)
+        with self.session_factory() as session:
+            reviews = session.query(Review).filter(Review.user_id == user_id).all()
+
+            books = []
+            for review in reviews:
+                book = (
+                    review.book
+                )  # Access the related Book object via ORM relationship
+                author = (
+                    book.author
+                )  # Access the related Author object via ORM relationship
+                books.append(
+                    {
+                        "id": book.id,
+                        "title": book.title,
+                        "genre": book.genre,
+                        "year": book.year,
+                        "description": book.description,
+                        "image": book.image,
+                        "is_active": book.is_active,
+                        "author_name": author.name,
+                        "author_surname": author.surname,
+                    }
+                )
+
+            return books
