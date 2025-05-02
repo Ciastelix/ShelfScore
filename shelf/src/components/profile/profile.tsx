@@ -2,6 +2,7 @@ import styles from './profile.module.scss';
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 export function Profile() {
   const { id } = useParams();
@@ -9,28 +10,70 @@ export function Profile() {
   const [user, setUser] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [books, setBooks] = useState<any[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const cookies = new Cookies();
 
   async function fetchBooks() {
-    const response = await axios.get('http://localhost:8000/users/books-read', {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      params: {
-        user_id: id,
-      },
-    });
-    setBooks(response.data);
+    try {
+      const response = await axios.get(
+        'http://localhost:8000/users/books-read',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          params: {
+            user_id: id,
+          },
+        }
+      );
+
+      setBooks(response.data);
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    }
   }
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/users/u/${id}`).then(async (response) => {
-      setUser(response.data);
-      setLoading(false);
-      await fetchBooks();
-    });
+    const fetchData = async () => {
+      try {
+        const token = cookies.get('token') || localStorage.getItem('token');
+
+        if (token) {
+          const response = await axios.get(
+            'http://localhost:8000/users/me/token',
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          console.log('Current User:', response.data);
+          setCurrentUserId(response.data.user.id);
+        } else {
+          console.warn('No token found in localStorage.');
+        }
+
+        const profileResponse = await axios.get(
+          `http://localhost:8000/users/u/${id}`
+        );
+
+        setUser(profileResponse.data);
+        setLoading(false);
+
+        await fetchBooks();
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
   }, [id]);
 
   const recentBooks = books.slice(0, 3);
+
+  const handleEditProfile = () => {
+    window.location.href = `/edit-profile/${id}`;
+  };
 
   return (
     <div className={styles['profile-container']}>
@@ -42,6 +85,14 @@ export function Profile() {
             <img src={`/images/profiles/${user.picture}`} alt="Profile" />
             <h1>{user.username}</h1>
             <p>{user.email}</p>
+            {currentUserId === id && (
+              <button
+                className={styles['edit-profile-button']}
+                onClick={handleEditProfile}
+              >
+                Edit Profile
+              </button>
+            )}
           </div>
         )}
       </div>

@@ -94,3 +94,17 @@ h1 {
 p {
   color: #e6e6e6;
 }
+.edit-profile-button {
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+
+  &:hover {
+    background-color: darken($color: $primary-color, $amount: 10%);
+  }
+}

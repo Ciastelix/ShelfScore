@@ -97,7 +97,7 @@ export function Navbar() {
             Authorization: `Bearer ${token}`,
           },
         });
-
+        
         setUserId(res.data.user.id);
         setImagePath(
           res.data.user.picture
