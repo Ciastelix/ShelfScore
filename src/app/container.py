@@ -15,7 +15,12 @@ from repositories.book import BookRepository
 
 class Container(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(
-        modules=["routes.user", "routes.book", "routes.review", "routes.author"]
+        modules=[
+            "routes.user",
+            "routes.book",
+            "routes.review",
+            "routes.author",
+        ]
     )
     config = providers.Configuration()
     config.db.url.from_env("DB_URL")

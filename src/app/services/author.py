@@ -10,7 +10,9 @@ class AuthorService:
     def add(self, author: AuthorInCreate) -> AuthorInDB:
         return self.author_repository.add(author)
 
-    def get_all(self, offset: int, limit: int, filter: str) -> list[AuthorInDB]:
+    def get_all(
+        self, offset: int, limit: int, filter: str
+    ) -> list[AuthorInDB]:
         return self.author_repository.get_all(offset, limit, filter)
 
     def get_by_id(self, author_id: UUID) -> AuthorInDB:
@@ -19,7 +21,9 @@ class AuthorService:
     async def update_image(self, author_id: UUID, image: str) -> AuthorInDB:
         return await self.author_repository.update_image(author_id, image)
 
-    def update(self, author_id: UUID, author_new: AuthorInUpdate) -> AuthorInDB:
+    def update(
+        self, author_id: UUID, author_new: AuthorInUpdate
+    ) -> AuthorInDB:
         return self.author_repository.update(author_id, author_new)
 
     def delete(self, author_id: UUID) -> None:

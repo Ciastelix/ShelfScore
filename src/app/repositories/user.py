@@ -79,7 +79,9 @@ class UserRepository:
         with self.session_factory() as session:
             user = session.query(User).filter_by(id=user_id).first()
             if verify_password(updated_password.password, user.password):
-                user.password = get_password_hash(updated_password.new_password)
+                user.password = get_password_hash(
+                    updated_password.new_password
+                )
                 session.commit()
                 session.refresh(user)
                 return user

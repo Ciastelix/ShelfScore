@@ -22,7 +22,9 @@ class AuthorRepository:
             session.refresh(author)
         return author
 
-    def get_all(self, offset: int, limit: int, filter: str) -> list[AuthorInDB]:
+    def get_all(
+        self, offset: int, limit: int, filter: str
+    ) -> list[AuthorInDB]:
         with self.session_factory() as session:
             if not filter:
                 return session.query(Author).offset(offset).limit(limit).all()
@@ -40,12 +42,16 @@ class AuthorRepository:
         with self.session_factory() as session:
             return session.query(Author).filter_by(id=author_id).first()
 
-    def update(self, author_id: UUID, author_new: AuthorInUpdate) -> AuthorInDB:
+    def update(
+        self, author_id: UUID, author_new: AuthorInUpdate
+    ) -> AuthorInDB:
         if isinstance(author_id, str):
             author_id = UUID(author_id)
         with self.session_factory() as session:
             author = session.query(Author).filter_by(id=author_id).first()
-            for key, value in author_new.model_dump(exclude_unset=True).items():
+            for key, value in author_new.model_dump(
+                exclude_unset=True
+            ).items():
                 setattr(author, key, value)
             session.commit()
             session.refresh(author)
