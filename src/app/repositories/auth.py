@@ -4,9 +4,6 @@ from datetime import datetime, timedelta
 from typing import Optional
 import jwt
 from os import environ
-
-from fastapi import HTTPException
-from datetime import timedelta
 from models.user import User
 
 from utils.security import verify_password

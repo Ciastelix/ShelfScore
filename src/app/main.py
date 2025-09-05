@@ -1,12 +1,14 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from container import Container
-import uvicorn
 from routes import user, book, review, author
 from main_routes import router
 
 container = Container()
 db = container.db()
 db.create_database()
+
 app = FastAPI()
 app.container = container
 app.include_router(user.router, prefix="/users")
@@ -15,9 +17,6 @@ app.include_router(review.router, prefix="/reviews")
 app.include_router(author.router, prefix="/authors")
 app.include_router(router)
 
-from fastapi.middleware.cors import CORSMiddleware
-
-# TODO: add paths for images and sizes; add authors to books and books to authors
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -27,4 +26,6 @@ app.add_middleware(
 )
 
 if __name__ == "__main__":
+    import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)
