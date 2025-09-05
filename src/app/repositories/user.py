@@ -90,7 +90,9 @@ class UserRepository:
         if isinstance(user_id, str):
             user_id = UUID(user_id)
         with self.session_factory() as session:
-            reviews = session.query(Review).filter(Review.user_id == user_id).all()
+            reviews = (
+                session.query(Review).filter(Review.user_id == user_id).all()
+            )
             books = []
             for review in reviews:
                 book = review.book

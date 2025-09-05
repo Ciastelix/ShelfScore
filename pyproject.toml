@@ -13,3 +13,11 @@ license = {text = "MIT"}
 
 [tool.pdm]
 distribution = false
+
+[tool.black]
+line-length = 80
+
+[tool.flake8]
+max-line-length = 80
+extend-ignore = ["E203", "W503"]
+exclude = [".git", "__pycache__", ".venv", "build", "dist"]

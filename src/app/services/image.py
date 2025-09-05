@@ -8,10 +8,17 @@ class ImageService:
         os.makedirs(upload_dir, exist_ok=True)
 
     async def save_image(
-        self, name: str, file, img_type: str, width: int = None, height: int = None
+        self,
+        name: str,
+        file,
+        img_type: str,
+        width: int = None,
+        height: int = None,
     ) -> str:
 
-        image_path = os.path.join(self.upload_dir + f"/{img_type}", f"{name}.png")
+        image_path = os.path.join(
+            self.upload_dir + f"/{img_type}", f"{name}.png"
+        )
         with open(image_path, "wb") as buffer:
             buffer.write(await file.read())
         with Image.open(image_path) as img:

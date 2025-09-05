@@ -10,7 +10,9 @@ class Book(Base):
     __tablename__ = "books"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     title = Column(String, nullable=False)
-    author_id = Column(UUID(as_uuid=True), ForeignKey("authors.id"), nullable=False)
+    author_id = Column(
+        UUID(as_uuid=True), ForeignKey("authors.id"), nullable=False
+    )
     genre = Column(String, nullable=False)
     year = Column(Integer, nullable=False)
     description = Column(String, nullable=False)

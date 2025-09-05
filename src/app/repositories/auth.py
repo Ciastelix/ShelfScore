@@ -63,7 +63,8 @@ class AuthRepository:
             if verify_password(password, usr.password):
                 access_token_expires = timedelta(minutes=30)
                 access_token = self.create_access_token(
-                    data={"sub": str(usr.id)}, expires_delta=access_token_expires
+                    data={"sub": str(usr.id)},
+                    expires_delta=access_token_expires,
                 )
                 return {"access_token": access_token, "token_type": "bearer"}
 

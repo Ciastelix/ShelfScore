@@ -12,11 +12,15 @@ def upgrade():
     # Add columns with default values
     op.add_column(
         "authors",
-        sa.Column("year_born", sa.String(), nullable=False, server_default="Unknown"),
+        sa.Column(
+            "year_born", sa.String(), nullable=False, server_default="Unknown"
+        ),
     )
     op.add_column(
         "authors",
-        sa.Column("photo", sa.String(), nullable=True, server_default="default.png"),
+        sa.Column(
+            "photo", sa.String(), nullable=True, server_default="default.png"
+        ),
     )
 
     # Remove the server_default after the columns are added

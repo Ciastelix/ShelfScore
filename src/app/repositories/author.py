@@ -51,7 +51,9 @@ class AuthorRepository:
             session.refresh(author)
             return author
 
-    async def update_image(self, author_id: UUID, image: UploadFile) -> AuthorInDB:
+    async def update_image(
+        self, author_id: UUID, image: UploadFile
+    ) -> AuthorInDB:
         if isinstance(author_id, str):
             author_id = UUID(author_id)
         with self.session_factory() as session:
