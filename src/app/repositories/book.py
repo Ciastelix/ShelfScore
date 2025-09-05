@@ -27,14 +27,13 @@ class BookRepository:
         return book
 
     async def update_image(self, book_id: UUID, image: UploadFile) -> Book:
-        if type(book_id) == str:
+        if isinstance(book_id, str):
             book_id = UUID(book_id)
         with self.session_factory() as session:
             book = session.query(Book).filter_by(id=book_id).first()
             image_path = await self.image_service.save_image(
                 book.id, image, "books", 200, 300
             )
-
             book.image = "/".join(image_path.split("/")[3:])
             session.commit()
             session.refresh(book)
@@ -53,13 +52,13 @@ class BookRepository:
             )
 
     def get_by_id(self, book_id: UUID) -> Book:
-        if type(book_id) == str:
+        if isinstance(book_id, str):
             book_id = UUID(book_id)
         with self.session_factory() as session:
             return session.query(Book).filter_by(id=book_id).first()
 
     def update(self, book_id: UUID, book_new: BookInUpdate) -> Book:
-        if type(book_id) == str:
+        if isinstance(book_id, str):
             book_id = UUID(book_id)
         with self.session_factory() as session:
             book = session.query(Book).filter_by(id=book_id).first()
@@ -70,7 +69,7 @@ class BookRepository:
             return book
 
     def delete(self, book_id: UUID) -> None:
-        if type(book_id) == str:
+        if isinstance(book_id, str):
             book_id = UUID(book_id)
         with self.session_factory() as session:
             book = session.query(Book).filter_by(id=book_id).first()

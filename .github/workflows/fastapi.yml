@@ -25,8 +25,8 @@ jobs:
           pdm install
       - name: Run linting
         run: |
-          pdm run flake8 --exclude=alembic .
-          pdm run black --check --exclude='alembic/.*' .
+          pdm run flake8 --exclude=alembic,migrations,alembic_models.py .
+          pdm run black --check --exclude='alembic/.*|migrations/.*|alembic_models.py' .
       - name: Run tests
         run: |
           pdm run pytest --cov=./ --cov-report=xml --ignore=alembic

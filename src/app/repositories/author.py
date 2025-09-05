@@ -9,7 +9,8 @@ from fastapi import UploadFile
 
 class AuthorRepository:
     def __init__(
-        self, session_factory: Callable[..., AbstractContextManager[Session]]
+        self,
+        session_factory: Callable[..., AbstractContextManager[Session]],
     ) -> None:
         self.session_factory = session_factory
 
@@ -34,24 +35,24 @@ class AuthorRepository:
             )
 
     def get_by_id(self, author_id: UUID) -> AuthorInDB:
-        if type(author_id) == str:
+        if isinstance(author_id, str):
             author_id = UUID(author_id)
         with self.session_factory() as session:
             return session.query(Author).filter_by(id=author_id).first()
 
     def update(self, author_id: UUID, author_new: AuthorInUpdate) -> AuthorInDB:
-        if type(author_id) == str:
+        if isinstance(author_id, str):
             author_id = UUID(author_id)
         with self.session_factory() as session:
             author = session.query(Author).filter_by(id=author_id).first()
-            for key, value in author_new.dict(exclude_unset=True).items():
+            for key, value in author_new.model_dump(exclude_unset=True).items():
                 setattr(author, key, value)
             session.commit()
             session.refresh(author)
             return author
 
     async def update_image(self, author_id: UUID, image: UploadFile) -> AuthorInDB:
-        if type(author_id) == str:
+        if isinstance(author_id, str):
             author_id = UUID(author_id)
         with self.session_factory() as session:
             author = session.query(Author).filter_by(id=author_id).first()
@@ -64,7 +65,7 @@ class AuthorRepository:
             return author
 
     def delete(self, author_id: UUID) -> None:
-        if type(author_id) == str:
+        if isinstance(author_id, str):
             author_id = UUID(author_id)
         with self.session_factory() as session:
             author = session.query(Author).filter_by(id=author_id).first()

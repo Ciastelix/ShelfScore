@@ -1,5 +1,5 @@
 from contextlib import AbstractContextManager
-from typing import Callable
+from typing import Callable, Any
 from sqlalchemy.orm import Session
 from schemas.user import UserInCreate, UserInUpdate, UserUpdatePassword
 from models.user import User
@@ -28,13 +28,13 @@ class UserRepository:
             return session.query(User).all()
 
     def get_by_id(self, user_id: UUID) -> User:
-        if type(user_id) == str:
+        if isinstance(user_id, str):
             user_id = UUID(user_id)
         with self.session_factory() as session:
             return session.query(User).filter_by(id=user_id).first()
 
     def update(self, user_id: UUID, user_new: UserInUpdate) -> User:
-        if type(user_id) == str:
+        if isinstance(user_id, str):
             user_id = UUID(user_id)
         with self.session_factory() as session:
             if user_new.password:
@@ -47,18 +47,17 @@ class UserRepository:
             return user
 
     def add_image(self, user_id: UUID, image_path: str) -> User:
-        if type(user_id) == str:
+        if isinstance(user_id, str):
             user_id = UUID(user_id)
         with self.session_factory() as session:
             user = session.query(User).filter_by(id=user_id).first()
             user.picture = image_path
-
             session.commit()
             session.refresh(user)
             return user
 
     def delete(self, user_id: UUID) -> None:
-        if type(user_id) == str:
+        if isinstance(user_id, str):
             user_id = UUID(user_id)
         with self.session_factory() as session:
             user = session.query(User).filter_by(id=user_id).first()
@@ -68,14 +67,14 @@ class UserRepository:
     def get_me(self, user: UserInCreate) -> User:
         with self.session_factory() as session:
             usr = session.query(User).filter_by(email=user.email).first()
-            if usr.password == get_password_hash(user.password):
+            if verify_password(user.password, usr.password):
                 return usr
 
     def change_password(
-        self, updated_password: UserUpdatePassword, current_user: any
+        self, updated_password: UserUpdatePassword, current_user: Any
     ) -> User:
         user_id = current_user.id
-        if type(user_id) == str:
+        if isinstance(user_id, str):
             user_id = UUID(user_id)
         with self.session_factory() as session:
             user = session.query(User).filter_by(id=user_id).first()
@@ -88,19 +87,14 @@ class UserRepository:
                 raise ValueError("Current password is incorrect")
 
     def get_books_read_by_user_with_author(self, user_id: UUID):
-        if type(user_id) == str:
+        if isinstance(user_id, str):
             user_id = UUID(user_id)
         with self.session_factory() as session:
             reviews = session.query(Review).filter(Review.user_id == user_id).all()
-
             books = []
             for review in reviews:
-                book = (
-                    review.book
-                )  # Access the related Book object via ORM relationship
-                author = (
-                    book.author
-                )  # Access the related Author object via ORM relationship
+                book = review.book
+                author = book.author
                 books.append(
                     {
                         "id": book.id,
@@ -114,5 +108,4 @@ class UserRepository:
                         "author_surname": author.surname,
                     }
                 )
-
             return books

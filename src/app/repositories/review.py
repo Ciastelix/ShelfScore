@@ -25,13 +25,13 @@ class ReviewRepository:
             return session.query(Review).offset(offset).limit(limit).all()
 
     def get_by_id(self, review_id: UUID) -> Review:
-        if type(review_id) == str:
+        if isinstance(review_id, str):
             review_id = UUID(review_id)
         with self.session_factory() as session:
             return session.query(Review).filter_by(id=review_id).first()
 
     def update(self, review_id: UUID, review_new: ReviewInUpdate) -> Review:
-        if type(review_id) == str:
+        if isinstance(review_id, str):
             review_id = UUID(review_id)
         with self.session_factory() as session:
             review = session.query(Review).filter_by(id=review_id).first()
@@ -42,7 +42,7 @@ class ReviewRepository:
             return review
 
     def delete(self, review_id: UUID) -> None:
-        if type(review_id) == str:
+        if isinstance(review_id, str):
             review_id = UUID(review_id)
         with self.session_factory() as session:
             review = session.query(Review).filter_by(id=review_id).first()

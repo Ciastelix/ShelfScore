@@ -1,5 +1,10 @@
 from fastapi import APIRouter, status, Depends, HTTPException, UploadFile, File
-from schemas.user import UserInCreate, UserInDB, UserInUpdate, UserUpdatePassword
+from schemas.user import (
+    UserInCreate,
+    UserInDB,
+    UserInUpdate,
+    UserUpdatePassword,
+)
 from dependency_injector.wiring import Provide, inject
 from services.user import UserService
 from container import Container
@@ -13,7 +18,11 @@ from typing import List
 router = APIRouter()
 
 
-@router.get("/", response_model=List[UserInDB], status_code=status.HTTP_200_OK)
+@router.get(
+    "/",
+    response_model=List[UserInDB],
+    status_code=status.HTTP_200_OK,
+)
 @inject
 def read_users(
     user_service: UserService = Depends(Provide[Container.user_service]),
@@ -21,7 +30,11 @@ def read_users(
     return user_service.get_all()
 
 
-@router.post("/", response_model=UserInDB, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/",
+    response_model=UserInDB,
+    status_code=status.HTTP_201_CREATED,
+)
 @inject
 def create_user(
     user: UserInCreate,
@@ -30,15 +43,24 @@ def create_user(
     return user_service.add(user)
 
 
-@router.get("/u/{user_id}", response_model=UserInDB, status_code=status.HTTP_200_OK)
+@router.get(
+    "/u/{user_id}",
+    response_model=UserInDB,
+    status_code=status.HTTP_200_OK,
+)
 @inject
 def read_user(
-    user_id: UUID, user_service: UserService = Depends(Provide[Container.user_service])
+    user_id: UUID,
+    user_service: UserService = Depends(Provide[Container.user_service]),
 ) -> UserInDB:
     return user_service.get_by_id(user_id)
 
 
-@router.put("/{user_id}", response_model=UserInDB, status_code=status.HTTP_200_OK)
+@router.put(
+    "/{user_id}",
+    response_model=UserInDB,
+    status_code=status.HTTP_200_OK,
+)
 @inject
 def update_user(
     user_id: UUID,
@@ -48,10 +70,14 @@ def update_user(
     return user_service.update(user_id, user)
 
 
-@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{user_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
 @inject
 def delete_user(
-    user_id: UUID, user_service: UserService = Depends(Provide[Container.user_service])
+    user_id: UUID,
+    user_service: UserService = Depends(Provide[Container.user_service]),
 ) -> None:
     return user_service.delete(user_id)
 
@@ -68,7 +94,10 @@ def login_user(
     return auth_service.login(form_data.username, form_data.password)
 
 
-@router.post("/change-password", status_code=status.HTTP_200_OK)
+@router.post(
+    "/change-password",
+    status_code=status.HTTP_200_OK,
+)
 @inject
 def change_password(
     user: UserUpdatePassword,
@@ -78,7 +107,11 @@ def change_password(
     return user_service.change_password(user, current_user)
 
 
-@router.post("/upload-image", response_model=UserInDB, status_code=status.HTTP_200_OK)
+@router.post(
+    "/upload-image",
+    response_model=UserInDB,
+    status_code=status.HTTP_200_OK,
+)
 @inject
 async def upload_image(
     current_user=Depends(get_current_user),
@@ -88,13 +121,10 @@ async def upload_image(
 ) -> UserInDB:
     if file.content_type not in ["image/jpeg", "image/png"]:
         raise HTTPException(status_code=400, detail="Invalid image format")
-
     image_path = await image_service.save_image(
         current_user.id, file, "profiles", 100, 100
     )
-
     user = user_service.add_image(current_user.id, image_path)
-
     return user
 
 
@@ -118,5 +148,4 @@ async def get_books_read_by_user_with_author(
     user_service: UserService = Depends(Provide[Container.user_service]),
 ):
     books = user_service.get_books_read_by_user_with_author(user_id)
-
     return books

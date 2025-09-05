@@ -1,4 +1,3 @@
-from uuid import UUID
 from repositories.auth import AuthRepository
 from schemas.user import UserInDB
 

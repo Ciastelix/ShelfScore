@@ -7,11 +7,14 @@ from uuid import UUID
 from utils.current_user import get_current_user
 from typing import List
 
-
 router = APIRouter()
 
 
-@router.get("/", response_model=List[BookInDB], status_code=status.HTTP_200_OK)
+@router.get(
+    "/",
+    response_model=List[BookInDB],
+    status_code=status.HTTP_200_OK,
+)
 @inject
 def read_books(
     offset: int = 0,
@@ -22,7 +25,11 @@ def read_books(
     return book_service.get_all(offset, limit, filter)
 
 
-@router.post("/", response_model=BookInDB, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/",
+    response_model=BookInDB,
+    status_code=status.HTTP_201_CREATED,
+)
 @inject
 async def create_book(
     book: BookInCreate,
@@ -32,7 +39,10 @@ async def create_book(
     return await book_service.add(book)
 
 
-@router.put("/{book_id}/image", status_code=status.HTTP_200_OK)
+@router.put(
+    "/{book_id}/image",
+    status_code=status.HTTP_200_OK,
+)
 @inject
 async def update_image(
     book_id: UUID,
@@ -43,15 +53,24 @@ async def update_image(
     return await book_service.update_image(book_id, image)
 
 
-@router.get("/{book_id}", response_model=BookInDB, status_code=status.HTTP_200_OK)
+@router.get(
+    "/{book_id}",
+    response_model=BookInDB,
+    status_code=status.HTTP_200_OK,
+)
 @inject
 def read_book(
-    book_id: UUID, book_service: BookService = Depends(Provide[Container.book_service])
+    book_id: UUID,
+    book_service: BookService = Depends(Provide[Container.book_service]),
 ) -> BookInDB:
     return book_service.get_by_id(book_id)
 
 
-@router.put("/{book_id}", response_model=BookInDB, status_code=status.HTTP_200_OK)
+@router.put(
+    "/{book_id}",
+    response_model=BookInDB,
+    status_code=status.HTTP_200_OK,
+)
 @inject
 def update_book(
     book_id: UUID,
@@ -62,7 +81,10 @@ def update_book(
     return book_service.update(book_id, book)
 
 
-@router.delete("/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{book_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
 @inject
 async def delete_book(
     book_id: UUID,

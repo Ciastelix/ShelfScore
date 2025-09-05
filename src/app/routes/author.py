@@ -9,7 +9,11 @@ from typing import List
 router = APIRouter()
 
 
-@router.get("/", response_model=List[AuthorInDB], status_code=status.HTTP_200_OK)
+@router.get(
+    "/",
+    response_model=List[AuthorInDB],
+    status_code=status.HTTP_200_OK,
+)
 @inject
 def read_authors(
     offset: int = 0,
@@ -20,7 +24,11 @@ def read_authors(
     return author_service.get_all(offset, limit, filter)
 
 
-@router.post("/", response_model=AuthorInDB, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/",
+    response_model=AuthorInDB,
+    status_code=status.HTTP_201_CREATED,
+)
 @inject
 def create_author(
     author: AuthorInCreate,
@@ -29,7 +37,11 @@ def create_author(
     return author_service.add(author)
 
 
-@router.get("/{author_id}", response_model=AuthorInDB, status_code=status.HTTP_200_OK)
+@router.get(
+    "/{author_id}",
+    response_model=AuthorInDB,
+    status_code=status.HTTP_200_OK,
+)
 @inject
 def read_author(
     author_id: UUID,
@@ -39,7 +51,9 @@ def read_author(
 
 
 @router.patch(
-    "/{author_id}/image", response_model=AuthorInDB, status_code=status.HTTP_200_OK
+    "/{author_id}/image",
+    response_model=AuthorInDB,
+    status_code=status.HTTP_200_OK,
 )
 @inject
 def update_author_image(
@@ -50,7 +64,11 @@ def update_author_image(
     return author_service.update_image(author_id, image)
 
 
-@router.put("/{author_id}", response_model=AuthorInDB, status_code=status.HTTP_200_OK)
+@router.put(
+    "/{author_id}",
+    response_model=AuthorInDB,
+    status_code=status.HTTP_200_OK,
+)
 @inject
 def update_author(
     author_id: UUID,
@@ -60,7 +78,10 @@ def update_author(
     return author_service.update(author_id, author)
 
 
-@router.delete("/{author_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{author_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
 @inject
 def delete_author(
     author_id: UUID,
