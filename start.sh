@@ -1,11 +1,15 @@
 #!/bin/bash
-source ./.venv/bin/activate
+set -euo pipefail
 
-cd ./src/app
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$SCRIPT_DIR"
 
-export DB_URL="sqlite:///./db.sqlite3"
+source "$PROJECT_ROOT/.venv/bin/activate"
+
+export DB_URL="sqlite:///${PROJECT_ROOT}/src/app/db.sqlite3"
 export JWT_SECRET="fJJZNs9LnU356LmyTQA8"
 export JWT_ALGORITHM="HS256"
-export IMAGE_URL="../../shelf/public/images"
+export IMAGE_URL="${PROJECT_ROOT}/shelf/public/images/"
 
-uvicorn main:app --port 8000  --reload
+cd "$PROJECT_ROOT/src"
+uvicorn app.main:app --port 8000 --reload --reload-dir "$PROJECT_ROOT/src/app"

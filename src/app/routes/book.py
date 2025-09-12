@@ -1,10 +1,10 @@
 from fastapi import APIRouter, status, Depends, UploadFile, File
-from schemas.book import BookInCreate, BookInDB, BookInUpdate
+from ..schemas.book import BookInCreate, BookInDB, BookInUpdate
 from dependency_injector.wiring import Provide, inject
-from services.book import BookService
-from container import Container
+from ..services.book import BookService
+from ..container import Container
 from uuid import UUID
-from utils.current_user import get_current_user
+from ..utils.current_user import get_current_user
 from typing import List
 
 router = APIRouter()

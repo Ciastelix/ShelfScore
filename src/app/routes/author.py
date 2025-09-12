@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, UploadFile, File, Response
 from dependency_injector.wiring import Provide, inject
-from services.author import AuthorService
-from container import Container
+from ..services.author import AuthorService
+from ..container import Container
 from uuid import UUID
-from schemas.author import AuthorInDB, AuthorInCreate, AuthorInUpdate
+from ..schemas.author import AuthorInDB, AuthorInCreate, AuthorInUpdate
 from typing import List
 
 router = APIRouter()
@@ -17,7 +17,7 @@ router = APIRouter()
 @inject
 def read_authors(
     offset: int = 0,
-    limit: int = 10,
+    limit: int = 50,
     filter: str = "",
     author_service: AuthorService = Depends(Provide[Container.author_service]),
 ) -> List[AuthorInDB]:
@@ -50,20 +50,6 @@ def read_author(
     return author_service.get_by_id(author_id)
 
 
-@router.patch(
-    "/{author_id}/image",
-    response_model=AuthorInDB,
-    status_code=status.HTTP_200_OK,
-)
-@inject
-def update_author_image(
-    author_id: UUID,
-    image: str,
-    author_service: AuthorService = Depends(Provide[Container.author_service]),
-) -> AuthorInDB:
-    return author_service.update_image(author_id, image)
-
-
 @router.put(
     "/{author_id}",
     response_model=AuthorInDB,
@@ -72,10 +58,24 @@ def update_author_image(
 @inject
 def update_author(
     author_id: UUID,
-    author: AuthorInUpdate,
+    payload: AuthorInUpdate,
     author_service: AuthorService = Depends(Provide[Container.author_service]),
 ) -> AuthorInDB:
-    return author_service.update(author_id, author)
+    return author_service.update(author_id, payload)
+
+
+@router.patch(
+    "/{author_id}/image",
+    response_model=AuthorInDB,
+    status_code=status.HTTP_200_OK,
+)
+@inject
+async def update_author_image(
+    author_id: UUID,
+    image: UploadFile = File(...),
+    author_service: AuthorService = Depends(Provide[Container.author_service]),
+) -> AuthorInDB:
+    return await author_service.update_image(author_id, image)
 
 
 @router.delete(
@@ -86,5 +86,6 @@ def update_author(
 def delete_author(
     author_id: UUID,
     author_service: AuthorService = Depends(Provide[Container.author_service]),
-) -> None:
-    return author_service.delete(author_id)
+) -> Response:
+    author_service.delete(author_id)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

@@ -4,9 +4,8 @@ from datetime import datetime, timedelta
 from typing import Optional
 import jwt
 from os import environ
-from models.user import User
-
-from utils.security import verify_password
+from ..models.user import User
+from ..utils.security import verify_password
 from sqlalchemy.orm import Session
 from contextlib import AbstractContextManager
 from typing import Callable

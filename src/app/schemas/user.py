@@ -1,5 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel
+from pydantic import ConfigDict
 from uuid import UUID
 
 
@@ -10,15 +11,11 @@ class UserInCreate(BaseModel):
 
 
 class UserInUpdate(BaseModel):
-    username: Optional[str]
-    email: Optional[str]
-    password: Optional[str]
-    description: Optional[str]
-    picture: Optional[str]
-    is_active: Optional[bool]
-
-    class Config:
-        from_model = True
+    username: Optional[str] = None
+    email: Optional[str] = None
+    description: Optional[str] = None
+    picture: Optional[str] = None
+    is_active: Optional[bool] = None
 
 
 class UserUpdatePassword(BaseModel):
@@ -27,9 +24,10 @@ class UserUpdatePassword(BaseModel):
 
 
 class UserInDB(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     id: UUID
     username: str
     email: str
-    description: str
-    picture: str
-    is_active: bool
+    description: Optional[str] = None
+    picture: Optional[str] = None
+    is_active: bool = True

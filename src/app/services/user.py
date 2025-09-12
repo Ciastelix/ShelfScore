@@ -1,6 +1,6 @@
-from schemas.user import UserInCreate, UserInUpdate
-from models.user import User
-from repositories.user import UserRepository
+from ..schemas.user import UserInCreate, UserInUpdate
+from ..models.user import User
+from ..repositories.user import UserRepository
 from uuid import UUID
 
 

@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from container import Container
-from routes import user, book, review, author
-from main_routes import router
+from .container import Container
+from .routes import user, book, review, author
+from .main_routes import router
 
 container = Container()
 db = container.db()

@@ -1,6 +1,6 @@
-from schemas.review import ReviewInCreate, ReviewInUpdate
-from models.review import Review
-from repositories.review import ReviewRepository
+from ..schemas.review import ReviewInCreate, ReviewInUpdate
+from ..models.review import Review
+from ..repositories.review import ReviewRepository
 from uuid import UUID
 
 
@@ -14,11 +14,11 @@ class ReviewService:
     def get_all(self, offset: int, limit: int, filter: str) -> list[Review]:
         return self.review_repository.get_all(offset, limit, filter)
 
-    def get_by_id(self, review_id: UUID) -> Review:
+    def get_by_id(self, review_id: UUID) -> Review | None:
         return self.review_repository.get_by_id(review_id)
 
-    def update(self, review_id: UUID, review_new: ReviewInUpdate) -> Review:
-        return self.review_repository.update(review_id, review_new)
+    def update(self, review_id: UUID, review: ReviewInUpdate) -> Review:
+        return self.review_repository.update(review_id, review)
 
     def delete(self, review_id: UUID) -> None:
         return self.review_repository.delete(review_id)

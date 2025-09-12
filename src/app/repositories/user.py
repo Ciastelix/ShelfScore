@@ -1,10 +1,10 @@
 from contextlib import AbstractContextManager
 from typing import Callable, Any
 from sqlalchemy.orm import Session
-from schemas.user import UserInCreate, UserInUpdate, UserUpdatePassword
-from models.user import User
-from models.review import Review
-from utils.security import get_password_hash, verify_password
+from ..schemas.user import UserInCreate, UserInUpdate, UserUpdatePassword
+from ..models.user import User
+from ..models.review import Review
+from ..utils.security import get_password_hash, verify_password
 from uuid import UUID
 
 

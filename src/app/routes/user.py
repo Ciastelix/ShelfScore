@@ -1,18 +1,18 @@
 from fastapi import APIRouter, status, Depends, HTTPException, UploadFile, File
-from schemas.user import (
+from ..schemas.user import (
     UserInCreate,
     UserInDB,
     UserInUpdate,
     UserUpdatePassword,
 )
 from dependency_injector.wiring import Provide, inject
-from services.user import UserService
-from container import Container
+from ..services.user import UserService
+from ..container import Container
 from uuid import UUID
 from fastapi.security import OAuth2PasswordRequestForm
-from services.auth import AuthService
-from utils.current_user import get_current_user
-from services.image import ImageService
+from ..services.auth import AuthService
+from ..utils.current_user import get_current_user
+from ..services.image import ImageService
 from typing import List
 
 router = APIRouter()

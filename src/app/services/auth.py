@@ -1,5 +1,5 @@
-from repositories.auth import AuthRepository
-from schemas.user import UserInDB
+from ..repositories.auth import AuthRepository
+from ..schemas.user import UserInDB
 
 
 class AuthService:

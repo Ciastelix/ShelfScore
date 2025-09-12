@@ -1,8 +1,8 @@
 from contextlib import AbstractContextManager
 from typing import Callable
 from sqlalchemy.orm import Session
-from schemas.review import ReviewInCreate, ReviewInUpdate
-from models.review import Review
+from ..schemas.review import ReviewInCreate, ReviewInUpdate
+from ..models.review import Review
 from uuid import UUID
 
 
@@ -14,37 +14,35 @@ class ReviewRepository:
 
     def add(self, review: ReviewInCreate) -> Review:
         with self.session_factory() as session:
-            review = Review(**review.model_dump())
-            session.add(review)
+            obj = Review(**review.model_dump())
+            session.add(obj)
             session.commit()
-            session.refresh(review)
-        return review
+            session.refresh(obj)
+            return obj
 
-    def get_all(self, offset: int, limit: int) -> list[Review]:
+    def get_all(self, offset: int, limit: int, filter: str) -> list[Review]:
         with self.session_factory() as session:
-            return session.query(Review).offset(offset).limit(limit).all()
+            q = session.query(Review)
+            if filter:
+                q = q.filter(Review.review.ilike(f"%{filter}%"))
+            return q.offset(offset).limit(limit).all()
 
-    def get_by_id(self, review_id: UUID) -> Review:
-        if isinstance(review_id, str):
-            review_id = UUID(review_id)
+    def get_by_id(self, review_id: UUID) -> Review | None:
         with self.session_factory() as session:
             return session.query(Review).filter_by(id=review_id).first()
 
     def update(self, review_id: UUID, review_new: ReviewInUpdate) -> Review:
-        if isinstance(review_id, str):
-            review_id = UUID(review_id)
         with self.session_factory() as session:
-            review = session.query(Review).filter_by(id=review_id).first()
-            for key, value in review_new.model_dump().items():
-                setattr(review, key, value)
+            obj = session.query(Review).filter_by(id=review_id).first()
+            for k, v in review_new.model_dump(exclude_unset=True).items():
+                setattr(obj, k, v)
             session.commit()
-            session.refresh(review)
-            return review
+            session.refresh(obj)
+            return obj
 
     def delete(self, review_id: UUID) -> None:
-        if isinstance(review_id, str):
-            review_id = UUID(review_id)
         with self.session_factory() as session:
-            review = session.query(Review).filter_by(id=review_id).first()
-            session.delete(review)
-            session.commit()
+            obj = session.query(Review).filter_by(id=review_id).first()
+            if obj:
+                session.delete(obj)
+                session.commit()

@@ -1,8 +1,8 @@
 from fastapi import Depends, HTTPException, status
-from services.auth import AuthService
+from ..services.auth import AuthService
 from dependency_injector.wiring import Provide, inject
-from container import Container
-from repositories.auth import oauth2_scheme
+from ..container import Container
+from ..repositories.auth import oauth2_scheme
 
 
 @inject

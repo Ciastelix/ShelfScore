@@ -1,5 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel
+from pydantic import ConfigDict
 from uuid import UUID
 
 
@@ -17,11 +18,9 @@ class AuthorInUpdate(BaseModel):
     is_active: Optional[bool]
     year_born: Optional[str]
 
-    class Config:
-        from_model = True
-
 
 class AuthorInDB(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     id: UUID
     name: str
     surname: str

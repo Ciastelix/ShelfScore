@@ -1,6 +1,6 @@
 from __future__ import annotations
 from sqlalchemy import Column, String, Boolean
-from db import Base
+from ..db import Base
 from uuid import uuid4
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
@@ -15,4 +15,4 @@ class User(Base):
     picture = Column(String, nullable=True, default="default.png")
     password = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
-    user_reviews = relationship("Review", back_populates="user")
+    reviews = relationship("Review", back_populates="user", cascade="all, delete-orphan")

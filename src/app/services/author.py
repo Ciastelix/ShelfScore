@@ -1,6 +1,7 @@
-from schemas.author import AuthorInCreate, AuthorInDB, AuthorInUpdate
+from ..schemas.author import AuthorInCreate, AuthorInDB, AuthorInUpdate
 from uuid import UUID
-from repositories.author import AuthorRepository
+from ..repositories.author import AuthorRepository
+from fastapi import UploadFile
 
 
 class AuthorService:
@@ -18,13 +19,15 @@ class AuthorService:
     def get_by_id(self, author_id: UUID) -> AuthorInDB:
         return self.author_repository.get_by_id(author_id)
 
-    async def update_image(self, author_id: UUID, image: str) -> AuthorInDB:
-        return await self.author_repository.update_image(author_id, image)
-
     def update(
         self, author_id: UUID, author_new: AuthorInUpdate
     ) -> AuthorInDB:
         return self.author_repository.update(author_id, author_new)
+
+    async def update_image(
+        self, author_id: UUID, image: UploadFile
+    ) -> AuthorInDB:
+        return await self.author_repository.update_image(author_id, image)
 
     def delete(self, author_id: UUID) -> None:
         return self.author_repository.delete(author_id)
