@@ -21,3 +21,8 @@ line-length = 79
 max-line-length = 79
 extend-ignore = ["E203", "W503"]
 exclude = [".git", "__pycache__", ".venv", "build", "dist"]
+
+[tool.pytest.ini_options]
+testpaths = ["src/app/tests"]
+python_files = ["*.py"]
+python_functions = ["test_*"]
