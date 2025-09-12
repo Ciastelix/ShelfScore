@@ -9,7 +9,10 @@ from ..utils.current_user import get_current_user
 
 router = APIRouter()
 
-@router.get("/", response_model=List[ReviewInDB], status_code=status.HTTP_200_OK)
+
+@router.get(
+    "/", response_model=List[ReviewInDB], status_code=status.HTTP_200_OK
+)
 @inject
 def read_reviews(
     offset: int = 0,
@@ -19,7 +22,10 @@ def read_reviews(
 ) -> List[ReviewInDB]:
     return review_service.get_all(offset, limit, filter)
 
-@router.post("/", response_model=ReviewInDB, status_code=status.HTTP_201_CREATED)
+
+@router.post(
+    "/", response_model=ReviewInDB, status_code=status.HTTP_201_CREATED
+)
 @inject
 def create_review(
     review: ReviewInCreate,
@@ -28,7 +34,10 @@ def create_review(
 ) -> ReviewInDB:
     return review_service.add(review)
 
-@router.get("/{review_id}", response_model=ReviewInDB, status_code=status.HTTP_200_OK)
+
+@router.get(
+    "/{review_id}", response_model=ReviewInDB, status_code=status.HTTP_200_OK
+)
 @inject
 def read_review(
     review_id: UUID,
@@ -36,7 +45,10 @@ def read_review(
 ) -> ReviewInDB:
     return review_service.get_by_id(review_id)
 
-@router.put("/{review_id}", response_model=ReviewInDB, status_code=status.HTTP_200_OK)
+
+@router.put(
+    "/{review_id}", response_model=ReviewInDB, status_code=status.HTTP_200_OK
+)
 @inject
 def update_review(
     review_id: UUID,
@@ -45,6 +57,7 @@ def update_review(
     user=Depends(get_current_user),
 ) -> ReviewInDB:
     return review_service.update(review_id, review)
+
 
 @router.delete("/{review_id}", status_code=status.HTTP_204_NO_CONTENT)
 @inject

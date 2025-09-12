@@ -1,26 +1,16 @@
-import os
 import io
-from pathlib import Path
 from uuid import UUID
 from unittest.mock import MagicMock, AsyncMock
-
 import pytest
 from fastapi.testclient import TestClient
 from PIL import Image
 from dependency_injector import providers
-
-# Set env before importing app/container
-ROOT = Path(__file__).resolve().parents[3]
-os.environ.setdefault("DB_URL", f"sqlite:///{ROOT}/src/app/db.sqlite3")
-os.environ.setdefault("JWT_SECRET", "fJJZNs9LnU356LmyTQA8")
-os.environ.setdefault("JWT_ALGORITHM", "HS256")
-os.environ.setdefault("IMAGE_URL", f"{ROOT}/shelf/public/images")
+from dependency_injector.wiring import Provide
 
 from app.container import Container
 from app.main import app
 from app.schemas.book import BookInCreate, BookInUpdate
 from app.utils.current_user import get_current_user
-from dependency_injector.wiring import Provide
 
 client = TestClient(app)
 
@@ -38,11 +28,13 @@ MOCK_BOOK = {
     "is_active": True,
 }
 
+
 @pytest.fixture(autouse=True)
 def mock_user():
     app.dependency_overrides[get_current_user] = lambda: {"id": "user-1"}
     yield
     app.dependency_overrides.pop(get_current_user, None)
+
 
 @pytest.fixture
 def mock_book_service():
@@ -59,6 +51,7 @@ def mock_book_service():
     app.dependency_overrides.pop(Provide[Container.book_service], None)
     app.container.book_service.reset_override()
 
+
 def test_create_book(mock_book_service: MagicMock):
     mock_book_service.add.return_value = MOCK_BOOK
     payload = BookInCreate(
@@ -73,17 +66,20 @@ def test_create_book(mock_book_service: MagicMock):
     assert resp.status_code == 201
     assert resp.json() == MOCK_BOOK
 
+
 def test_read_books(mock_book_service: MagicMock):
     mock_book_service.get_all.return_value = [MOCK_BOOK]
     resp = client.get("/books/?offset=0&limit=10&filter=")
     assert resp.status_code == 200
     assert resp.json() == [MOCK_BOOK]
 
+
 def test_read_book(mock_book_service: MagicMock):
     mock_book_service.get_by_id.return_value = MOCK_BOOK
     resp = client.get(f"/books/{BOOK_ID}")
     assert resp.status_code == 200
     assert resp.json() == MOCK_BOOK
+
 
 def test_update_book(mock_book_service: MagicMock):
     update = BookInUpdate(
@@ -102,6 +98,7 @@ def test_update_book(mock_book_service: MagicMock):
     assert resp.status_code == 200
     assert resp.json() == expected
 
+
 def test_update_book_image(mock_book_service: MagicMock):
     buf = io.BytesIO()
     Image.new("RGB", (4, 4), color=(0, 255, 0)).save(buf, format="PNG")
@@ -114,6 +111,7 @@ def test_update_book_image(mock_book_service: MagicMock):
     resp = client.put(f"/books/{BOOK_ID}/image", files=files)
     assert resp.status_code == 200
     assert resp.json() == expected
+
 
 def test_delete_book(mock_book_service: MagicMock):
     mock_book_service.delete.return_value = None

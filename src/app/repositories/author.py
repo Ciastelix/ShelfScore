@@ -75,7 +75,7 @@ class AuthorRepository:
             base = Path(getattr(self.image_service, "upload_dir", ""))
             try:
                 rel = p.relative_to(base)
-                author.photo = rel.as_posix()   
+                author.photo = rel.as_posix()
             except Exception:
                 parts = p.parts
                 if "authors" in parts:

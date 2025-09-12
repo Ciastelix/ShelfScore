@@ -5,7 +5,9 @@ from uuid import uuid4
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 import os
+
 IMAGE_URL = os.getenv("IMAGE_URL", "shelf/public/images")
+
 
 class Author(Base):
     __tablename__ = "authors"
@@ -15,5 +17,9 @@ class Author(Base):
     description = Column(String, nullable=True, default="No description")
     is_active = Column(Boolean, default=True)
     year_born = Column(String, nullable=False, default="Unknown")
-    photo = Column(String, nullable=True, default=f"{IMAGE_URL}/authors/default.png")
-    books = relationship("Book", back_populates="author", cascade="all, delete-orphan")
+    photo = Column(
+        String, nullable=True, default=f"{IMAGE_URL}/authors/default.png"
+    )
+    books = relationship(
+        "Book", back_populates="author", cascade="all, delete-orphan"
+    )

@@ -19,8 +19,12 @@ class Book(Base):
     genre = Column(String, nullable=False)
     year = Column(Integer, nullable=False)
     description = Column(String, nullable=True)
-    image = Column(String, nullable=True, default=f"{IMAGE_URL}/books/default.png")
+    image = Column(
+        String, nullable=True, default=f"{IMAGE_URL}/books/default.png"
+    )
     is_active = Column(Boolean, default=True)
 
     author = relationship("Author", back_populates="books")
-    reviews = relationship("Review", back_populates="book", cascade="all, delete-orphan")
+    reviews = relationship(
+        "Review", back_populates="book", cascade="all, delete-orphan"
+    )

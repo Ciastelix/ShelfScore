@@ -15,4 +15,6 @@ class User(Base):
     picture = Column(String, nullable=True, default="default.png")
     password = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
-    reviews = relationship("Review", back_populates="user", cascade="all, delete-orphan")
+    reviews = relationship(
+        "Review", back_populates="user", cascade="all, delete-orphan"
+    )
