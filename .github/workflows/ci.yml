@@ -22,26 +22,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: pnpm
-          cache-dependency-path: shelf/pnpm-lock.yaml
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.12.3
-          run_install: false
+          cache: npm
+          cache-dependency-path: shelf/package-lock.json
 
       - name: Install deps
-        run: pnpm install
+        run: npm install --no-fund --no-audit
 
       - name: Lint
-        run: pnpm nx lint shelf
+        run: npx nx lint shelf
 
       - name: Test (Vitest)
-        run: pnpm vitest run
+        run: npx vitest run
 
       - name: Typecheck
-        run: pnpm tsc -p tsconfig.app.json --noEmit
+        run: npx tsc -p tsconfig.app.json --noEmit
 
       - name: Build
-        run: pnpm nx build shelf
+        run: npx nx build shelf
