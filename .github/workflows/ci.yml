@@ -47,4 +47,4 @@ jobs:
         run: pnpm tsc -p tsconfig.app.json --noEmit
 
       - name: Build
-        run: pnpm nx build shelf --no-cloud
+        run: pnpm vite build

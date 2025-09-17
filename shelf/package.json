@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
-    "build": "nx build --no-cloud",
+    "build": "vite build",
     "test": "nx test --no-cloud",
     "vitest": "vitest",
     "vitest:run": "vitest run",
