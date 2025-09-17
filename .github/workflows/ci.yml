@@ -15,7 +15,7 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     env:
-      NX_CLOUD_DISABLED: 'true'   
+      NX_NO_CLOUD: 'true'
       NX_DAEMON: 'false'          
     steps:
       - name: Checkout
