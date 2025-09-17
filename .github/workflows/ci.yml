@@ -18,24 +18,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.3
+          run_install: false
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: npm
-          cache-dependency-path: shelf/package-lock.json
+          cache: pnpm
+          cache-dependency-path: shelf/pnpm-lock.yaml
 
       - name: Install deps
-        run: npm install --no-fund --no-audit
+        run: pnpm install
 
       - name: Lint
-        run: npx nx lint shelf
+        run: pnpm nx lint shelf
 
       - name: Test (Vitest)
-        run: npx vitest run
+        run: pnpm vitest run
 
       - name: Typecheck
-        run: npx tsc -p tsconfig.app.json --noEmit
+        run: pnpm tsc -p tsconfig.app.json --noEmit
 
       - name: Build
-        run: npx nx build shelf
+        run: pnpm nx build shelf
