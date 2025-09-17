@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import styles from './navbar.module.scss';
 import { Login } from '../login/login';
 import Cookies from 'universal-cookie';
@@ -15,7 +15,7 @@ export function Navbar() {
   const loginRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const [userId, setUserId] = useState('');
-  const cookies = new Cookies(null, { path: '/' });
+  const cookies = useMemo(() => new Cookies(), []);
   const [imagePath, setImagePath] = useState('/images/profiles/default.png');
 
   const toggleMenu = () => {
@@ -132,24 +132,21 @@ export function Navbar() {
         >
           {!token ? (
             <>
-              <Link to="#login" onClick={toggleLogin}>
+              <button type="button" onClick={toggleLogin} className={styles['as-link']}>
                 Login
-              </Link>
+              </button>
               <Link to="/register">Register</Link>
             </>
           ) : (
             <>
-              <Link
-                to={`/profile/${userId}`}
-                className={styles['profile-link']}
-              >
+              <Link to={`/profile/${userId}`} className={styles['profile-link']}>
                 <img src={imagePath} alt="Profile" /> Profile
               </Link>
               <Link to="/books">Books</Link>
               <Link to="/authors">Authors</Link>
-              <Link to="#logout" onClick={logout}>
+              <button type="button" onClick={logout} className={styles['as-link']}>
                 Logout
-              </Link>
+              </button>
             </>
           )}
         </div>

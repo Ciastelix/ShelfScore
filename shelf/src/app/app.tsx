@@ -1,7 +1,4 @@
-// Uncomment this line to use CSS modules
-// import styles from './app.module.scss';
 import styles from './app.module.scss';
-
 import Navbar from '../components/navbar/navbar';
 import Home from '../components/home/home';
 import { useEffect, useState } from 'react';

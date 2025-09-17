@@ -6,5 +6,13 @@
   "projectType": "application",
   "tags": [],
   "// targets": "to see all targets run: nx show project shelf --web",
-  "targets": {}
+  "targets": {
+    "test": {
+      "executor": "@nx/vite:test",
+      "options": {
+        "reportsDirectory": "coverage",
+        "passWithNoTests": true
+      }
+    }
+  }
 }

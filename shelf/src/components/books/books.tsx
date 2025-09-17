@@ -1,4 +1,3 @@
-import styles from './books.module.scss';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { PaginatedList } from '../paginated-list/PaginatedList';

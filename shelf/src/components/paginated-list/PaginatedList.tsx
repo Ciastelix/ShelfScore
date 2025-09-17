@@ -16,19 +16,24 @@ export function PaginatedList<
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const debounce = (func: Function, delay: number) => {
-    let timer: NodeJS.Timeout;
-    return (...args: any[]) => {
+  const safeItems = Array.isArray(items) ? items : [];
+  const safeKeys = Array.isArray(searchKeys) ? searchKeys : [];
+
+  function debounce<A extends unknown[]>(
+    fn: (...args: A) => void,
+    delay: number
+  ) {
+    let timer: ReturnType<typeof setTimeout>;
+    return (...args: A) => {
       clearTimeout(timer);
       timer = setTimeout(() => {
-        func(...args);
+        fn(...args);
       }, delay);
     };
-  };
+  }
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let query = e.target.value;
-
     query = query.replace(/^\s+/, '').replace(/\s{2,}$/, ' ');
     setSearchQuery(query);
     setCurrentPage(1);
@@ -49,80 +54,63 @@ export function PaginatedList<
     }
   }, [searchQuery, debouncedSearch]);
 
-  const isString = (value: any): value is string => {
-    return typeof value === 'string' || value instanceof String;
-  };
+  const isString = (value: unknown): value is string =>
+    typeof value === 'string' || value instanceof String;
 
-  const filteredItems = items.filter((item) =>
-    searchKeys.some((key) => {
-      const value = item[key];
-      return (
-        isString(value) &&
-        value.toLowerCase().includes(debouncedQuery.toLowerCase())
-      );
-    })
-  );
+  const filteredItems =
+    safeKeys.length === 0
+      ? safeItems
+      : safeItems.filter((item) =>
+          safeKeys.some((key) => {
+            const value = item[key];
+            return isString(value) && value.toLowerCase().includes(debouncedQuery.toLowerCase());
+          })
+        );
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  const totalPages = Math.max(1, Math.ceil(filteredItems.length / itemsPerPage));
 
   const handleNextPage = (e: React.MouseEvent<HTMLDivElement>) => {
     if (currentPage < totalPages) {
       createRipple(e);
-      setTimeout(() => {
-        setCurrentPage(currentPage + 1);
-      }, 200);
+      setTimeout(() => setCurrentPage((p) => p + 1), 200);
     }
   };
 
   const handlePreviousPage = (e: React.MouseEvent<HTMLDivElement>) => {
     if (currentPage > 1) {
       createRipple(e);
-      setTimeout(() => {
-        setCurrentPage(currentPage - 1);
-      }, 200);
+      setTimeout(() => setCurrentPage((p) => p - 1), 200);
     }
   };
 
   const createRipple = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rippleContainer = e.currentTarget.querySelector(
+    const rc = e.currentTarget.querySelector(
       `.${styles['ripple-container']}`
-    );
-    const ripple = document.createElement('span');
-    const diameter = Math.max(
-      rippleContainer!.clientWidth,
-      rippleContainer!.clientHeight
-    );
+    ) as HTMLDivElement | null;
+    if (!rc) return;
+
+    const diameter = Math.max(rc.clientWidth, rc.clientHeight);
     const radius = diameter / 2;
 
+    const ripple = document.createElement('span');
     ripple.style.width = ripple.style.height = `${diameter}px`;
-    ripple.style.left = `${
-      e.clientX - rippleContainer!.getBoundingClientRect().left - radius
-    }px`;
-    ripple.style.top = `${
-      e.clientY - rippleContainer!.getBoundingClientRect().top - radius
-    }px`;
+    ripple.style.left = `${e.clientX - rc.getBoundingClientRect().left - radius}px`;
+    ripple.style.top = `${e.clientY - rc.getBoundingClientRect().top - radius}px`;
     ripple.classList.add(styles['ripple']);
 
-    const rippleElement = rippleContainer!.getElementsByClassName(
-      styles['ripple']
-    )[0];
-    if (rippleElement) {
-      rippleElement.remove();
-    }
+    const rippleElement = rc.getElementsByClassName(styles['ripple'])[0];
+    if (rippleElement) rippleElement.remove();
 
-    rippleContainer!.appendChild(ripple);
+    rc.appendChild(ripple);
   };
 
   const getDefaultImage = (prefix: string) => {
-    if (prefix.includes('book')) {
-      return '/images/books/default.png';
-    } else if (prefix.includes('author')) {
-      return '/images/authors/default.png';
-    }
+    if (prefix.includes('book')) return '/images/books/default.png';
+    if (prefix.includes('author')) return '/images/authors/default.png';
     return '/images/default.png';
   };
 
@@ -154,10 +142,10 @@ export function PaginatedList<
               <div className={styles['card']}>
                 <img
                   src={
-                    (item.image == 'default.png'
+                    (item.image === 'default.png'
                       ? getDefaultImage(linkPrefix)
                       : item.image) ||
-                    (item.photo == 'default.png'
+                    (item.photo === 'default.png'
                       ? getDefaultImage(linkPrefix)
                       : item.photo) ||
                     getDefaultImage(linkPrefix)
@@ -165,7 +153,7 @@ export function PaginatedList<
                   alt={item.name || 'Item image'}
                   className={styles['card-image']}
                 />
-                {searchKeys.map((key, index) => (
+                {safeKeys.map((key, index) => (
                   <p
                     key={key as string}
                     className={index === 0 ? styles['bold'] : ''}
@@ -181,9 +169,7 @@ export function PaginatedList<
       <div
         className={styles['arrow-container']}
         onClick={handleNextPage}
-        style={{
-          visibility: currentPage === totalPages ? 'hidden' : 'visible',
-        }}
+        style={{ visibility: currentPage === totalPages ? 'hidden' : 'visible' }}
       >
         <span className="material-symbols-outlined">arrow_forward_ios</span>
         <div className={styles['ripple-container']}></div>
@@ -191,3 +177,5 @@ export function PaginatedList<
     </div>
   );
 }
+
+export default PaginatedList;

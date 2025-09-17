@@ -9,21 +9,21 @@ $tertiary-color: #0f7458;
   padding: 1rem 2rem;
   background-color: $primary-color;
   color: #fff;
-  margin: 0; /* Ensure no margin */
-  width: 100%; /* Ensure it spans the full width */
-  position: relative; /* Make navbar the positioning context */
+  margin: 0; 
+  width: 100%;
+  position: relative;
 
   .profile-link {
     display: flex;
     align-items: center;
-    gap: 0.5rem; /* Space between image and text */
+    gap: 0.5rem; 
   }
 
   img {
-    width: 2rem; /* Adjust the size as needed */
-    height: 2rem; /* Adjust the size as needed */
-    border-radius: 50%; /* Make the image round */
-    object-fit: cover; /* Ensure the image covers the container */
+    width: 2rem; 
+    height: 2rem; 
+    border-radius: 50%; 
+    object-fit: cover; 
   }
 
   .logo {
@@ -34,15 +34,15 @@ $tertiary-color: #0f7458;
     font-style: normal;
     color: #f9f9f9;
     text-decoration: none;
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none; 
     cursor: default;
   }
 
   .menu {
     display: flex;
-    align-items: center; /* Ensure items are centered vertically */
+    align-items: center; 
     gap: 1rem;
     font-family: 'Kanit', sans-serif;
     font-weight: 300;
@@ -83,7 +83,7 @@ $tertiary-color: #0f7458;
       top: 60px;
       left: 0;
       padding: 1rem 0;
-      align-items: center; /* Center items horizontally */
+      align-items: center; 
 
       a {
         padding: 1rem;
@@ -128,30 +128,30 @@ $tertiary-color: #0f7458;
   align-items: flex-start;
   margin-top: 5rem;
   min-width: 300px;
-  z-index: 1000; /* Ensure it appears in front of other content */
+  z-index: 1000; 
   animation: fadeIn 0.5s ease-in-out;
   &.fade-out {
     animation: fadeOut 0.5s ease-in-out;
   }
 
   @media (max-width: 768px) {
-    justify-content: center; /* Center the login form */
-    left: 50%; /* Center the login form */
-    transform: translateX(-50%); /* Center the login form */
+    justify-content: center; 
+    left: 50%; 
+    transform: translateX(-50%); 
   }
 
   @media (max-width: 480px) {
     min-width: 100%;
     padding: 1rem;
-    justify-content: center; /* Center the login form */
-    left: 50%; /* Center the login form */
-    transform: translateX(-50%); /* Center the login form */
+    justify-content: center; 
+    left: 50%; 
+    transform: translateX(-50%); 
   }
 }
 
 .login-wrapper {
   background-color: #f9f9f9;
-  padding: 2rem; /* Make the login form wider */
+  padding: 2rem; 
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 

@@ -12,49 +12,34 @@ defaults:
     working-directory: ./shelf
 
 jobs:
-  install:
+  ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
-      - name: Install dependencies
-        run: npm install
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  lint:
-    needs: install
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: "npm"
-      - name: Run linting
-        run: npx nx lint
+          node-version: 20.x
+          cache: pnpm
+          cache-dependency-path: shelf/pnpm-lock.yaml
 
-  test:
-    needs: install
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          node-version: 20
-          cache: "npm"
-      - name: Run tests
-        run: npx nx test
+          version: 9.12.3
+          run_install: true
+          package_json_file: shelf/package.json
 
-  build:
-    needs: [lint, test]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
-      - name: Build project
-        run: npx nx build
+      - name: Lint
+        run: pnpm nx lint shelf
+
+      - name: Test (Vitest)
+        run: pnpm vitest run
+
+      - name: Typecheck
+        run: pnpm tsc -p tsconfig.app.json --noEmit
+
+      - name: Build
+        run: pnpm nx build shelf
